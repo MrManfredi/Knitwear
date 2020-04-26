@@ -7,22 +7,16 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
 <VBox minHeight="-Infinity" minWidth="-Infinity" prefWidth="400.0" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kpi.manfredi.gui.HomeScreenController">
     <children>
-        <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="Welcome">
-            <font>
-                <Font name="Times New Roman" size="36.0" />
-            </font>
-        </Label>
         <Button fx:id="createButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Create New Project" />
-        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Open Existing Project" />
+        <Button fx:id="openButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Open Existing Project" />
         <Separator prefWidth="200.0" />
         <HBox>
             <children>
                 <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Language:" HBox.hgrow="ALWAYS" />
-                <ChoiceBox maxWidth="1.7976931348623157E308" prefWidth="150.0" HBox.hgrow="ALWAYS" />
+                <ChoiceBox fx:id="languageChoiceBox" maxWidth="1.7976931348623157E308" prefWidth="150.0" HBox.hgrow="ALWAYS" />
             </children>
         </HBox>
     </children>
