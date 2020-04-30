@@ -12,8 +12,9 @@ public class JavaFxMain extends Application {
         Context.getInstance().setPrimaryStage(primaryStage);
 
         Context.SceneController sceneController = Context.getInstance().getSceneController();
-        sceneController.addScene(Screen.HOME, FXMLLoader.load(getClass().getResource("/HomeScreen.fxml")));
-        sceneController.addScene(Screen.MAIN, FXMLLoader.load(getClass().getResource("/MainScreen.fxml")));
+        sceneController.addScene(Screen.HOME, FXMLLoader.load(getClass().getResource("/screens/HomeScreen.fxml")));
+        sceneController.addScene(Screen.MAIN, FXMLLoader.load(getClass().getResource("/screens/MainScreen.fxml")));
+
         sceneController.activateScene(Screen.HOME);
 
         primaryStage.setTitle("Knitwear");

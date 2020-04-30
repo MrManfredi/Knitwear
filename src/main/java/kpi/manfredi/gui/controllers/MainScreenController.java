@@ -1,4 +1,4 @@
-package kpi.manfredi.gui;
+package kpi.manfredi.gui.controllers;
 
 import javafx.fxml.Initializable;
 

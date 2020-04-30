@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox minHeight="-Infinity" minWidth="-Infinity" prefWidth="400.0" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kpi.manfredi.gui.HomeScreenController">
+<VBox minHeight="-Infinity" minWidth="-Infinity" prefWidth="400.0" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kpi.manfredi.gui.controllers.HomeScreenController">
     <children>
         <Button fx:id="createButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Create New Project" />
         <Button fx:id="openButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Open Existing Project" />

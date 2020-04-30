@@ -52,7 +52,7 @@ public class Context {
      *
      * @return an instance of {@code SceneController}
      */
-    SceneController getSceneController() {
+    public SceneController getSceneController() {
         if (sceneController == null) {
             sceneController = new SceneController();
         }
@@ -64,7 +64,7 @@ public class Context {
      *
      * @return available locales
      */
-    List<Locale> getAvailableLocales() {
+    public List<Locale> getAvailableLocales() {
         return availableLocales;
     }
 
@@ -89,7 +89,7 @@ public class Context {
     /**
      * This class is used to switching between scenes
      */
-    class SceneController {
+    public class SceneController {
         private HashMap<Screen, Pane> sceneMap = new HashMap<>();
         private Scene scene;
 
@@ -102,7 +102,7 @@ public class Context {
          * @param key  key of screen
          * @param pane pane to add
          */
-        void addScene(Screen key, Pane pane) {
+        public void addScene(Screen key, Pane pane) {
             sceneMap.put(key, pane);
         }
 
@@ -111,7 +111,7 @@ public class Context {
          *
          * @param key key of screen to remove
          */
-        void removeScene(Screen key) {
+        public void removeScene(Screen key) {
             sceneMap.remove(key);
         }
 
@@ -120,7 +120,7 @@ public class Context {
          *
          * @param key key of screen that will be activated
          */
-        void activateScene(Screen key) {
+        public void activateScene(Screen key) {
             scene = new Scene(sceneMap.get(key));
             primaryStage.setScene(scene);
             primaryStage.setMinWidth(Math.max(scene.getWidth(), MIN_WIDTH));
