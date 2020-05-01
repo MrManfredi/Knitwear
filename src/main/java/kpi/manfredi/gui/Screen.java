@@ -8,7 +8,8 @@ package kpi.manfredi.gui;
 public enum Screen {
     HOME("/screens/HomeScreen.fxml"),
     MAIN("/screens/MainScreen.fxml"),
-    CREATING1("/screens/CreatingScreen1.fxml");
+    CREATING1("/screens/CreatingScreen1.fxml"),
+    CREATING2("/screens/CreatingScreen2.fxml");
 
     private final String path;
 
