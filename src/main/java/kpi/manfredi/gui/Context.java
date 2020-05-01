@@ -15,6 +15,7 @@ public class Context {
 
     private Stage primaryStage;
     private Locale currentLocale;
+    private int numberOfCombs;
 
     private static Context instance;
 
@@ -80,5 +81,13 @@ public class Context {
      */
     public void setCurrentLocale(Locale currentLocale) {
         this.currentLocale = currentLocale;
+    }
+
+    public int getNumberOfCombs() {
+        return numberOfCombs;
+    }
+
+    public void setNumberOfCombs(int numberOfCombs) {
+        this.numberOfCombs = numberOfCombs;
     }
 }
