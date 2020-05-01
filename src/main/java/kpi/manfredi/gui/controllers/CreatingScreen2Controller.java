@@ -4,7 +4,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import kpi.manfredi.gui.Context;
 import kpi.manfredi.gui.Screen;
 import kpi.manfredi.utils.MessageUtil;
@@ -12,19 +13,25 @@ import kpi.manfredi.utils.MessageUtil;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class CreatingScreen1Controller implements Initializable {
+public class CreatingScreen2Controller implements Initializable {
 
     @FXML
     private Label headerLabel;
 
     @FXML
-    private Label numberOfCombsLabel;
+    private TableView<?> dataTable;
 
     @FXML
-    private TextField numberOfCombsTf;
+    private TableColumn<?, ?> numberColumn;
 
     @FXML
-    private Button cancelButton;
+    private TableColumn<?, ?> masonryHeightColumn;
+
+    @FXML
+    private TableColumn<?, ?> combSealColumn;
+
+    @FXML
+    private Button backButton;
 
     @FXML
     private Button nextButton;
@@ -32,8 +39,7 @@ public class CreatingScreen1Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         refreshLocalization();
-        initCancelButtonListener();
-        initNextButtonListener();
+        initBackButtonListener();
     }
 
     /**
@@ -41,23 +47,16 @@ public class CreatingScreen1Controller implements Initializable {
      */
     private void refreshLocalization() {
         headerLabel.setText(MessageUtil.getMessage("creating.header"));
-        numberOfCombsLabel.setText(MessageUtil.getMessage("number.of.combs"));
-        cancelButton.setText(MessageUtil.getMessage("button.cancel"));
+        masonryHeightColumn.setText(MessageUtil.getMessage("masonry.height"));
+        combSealColumn.setText(MessageUtil.getMessage("comb.seal"));
+        backButton.setText(MessageUtil.getMessage("button.back"));
         nextButton.setText(MessageUtil.getMessage("button.next"));
     }
 
-    private void initCancelButtonListener() {
-        cancelButton.setOnAction(event -> ScreenController.activateScreen(
-                Screen.HOME.getPath(),
+    private void initBackButtonListener() {
+        backButton.setOnAction(event -> ScreenController.activateScreen(
+                Screen.CREATING1.getPath(),
                 Context.getInstance().getPrimaryStage()
         ));
-    }
-
-    private void initNextButtonListener() {
-        nextButton.setOnAction(event -> {
-            ScreenController.activateScreen(
-                    Screen.CREATING2.getPath(),
-                    Context.getInstance().getPrimaryStage());
-        });
     }
 }
