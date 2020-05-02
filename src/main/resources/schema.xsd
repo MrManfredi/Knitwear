@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://model.manfredi.kpi"
+           xmlns:tns="http://model.manfredi.kpi"
+           elementFormDefault="qualified">
+
+    <xs:complexType name="Comb">
+        <xs:sequence>
+            <xs:element name="color" type="xs:token" maxOccurs="unbounded"/>
+            <xs:element name="row" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="a" type="xs:nonNegativeInteger"/>
+                        <xs:element name="b" type="xs:nonNegativeInteger"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="visible" type="xs:boolean"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="Data">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="comb" type="tns:Comb" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema>
