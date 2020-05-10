@@ -2,19 +2,21 @@ package kpi.manfredi.gui.controllers;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import kpi.manfredi.gui.Context;
 import kpi.manfredi.gui.Screen;
+import kpi.manfredi.model.Comb;
+import kpi.manfredi.model.Data;
+import kpi.manfredi.utils.DialogsUtil;
 import kpi.manfredi.utils.MessageUtil;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class CreatingScreen2Controller implements Initializable {
@@ -47,6 +49,7 @@ public class CreatingScreen2Controller implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         refreshLocalization();
         initBackButtonListener();
+        initNextButtonListener();
         initTable();
     }
 
@@ -67,6 +70,55 @@ public class CreatingScreen2Controller implements Initializable {
                 Screen.CREATING1.getPath(),
                 Context.getInstance().getPrimaryStage()
         ));
+    }
+
+    private void initNextButtonListener() {
+        nextButton.setOnAction(actionEvent -> {
+            ObservableList<Input> tableItems = dataTable.getItems();
+            Data data = Context.getInstance().getData();
+            data.getComb().clear();
+
+            for (Input item : tableItems) {
+                int numOfSteps;
+                int numOfColors;
+                try {
+                    numOfSteps = Integer.parseInt(item.masonryHeightColumn);
+                    numOfColors = Integer.parseInt(item.combSealColumn);
+
+                    if (numOfSteps < 1 || numOfColors < 1) {
+                        throw new NumberFormatException();
+                    }
+                } catch (NumberFormatException e) {
+                    DialogsUtil.showAlert(
+                            Alert.AlertType.WARNING,
+                            MessageUtil.getMessage("warning.title"),
+                            MessageUtil.getMessage("number.format.exception"),
+                            MessageUtil.formatMessage("line.error", item.numberColumn)
+                    );
+                    return;
+                }
+
+                data.getComb().add(initNewComb(numOfSteps, numOfColors));
+            }
+            System.out.println();
+//            ScreenController.activateScreen(Screen.COMB_SETTINGS.getPath(), Context.getInstance().getPrimaryStage());
+        });
+    }
+
+    private Comb initNewComb(int numOfSteps, int numOfColors) {
+        Comb comb = new Comb();
+
+        List<Comb.Row> rows = comb.getRow();
+        for (int i = 0; i < numOfSteps; i++) {
+            rows.add(new Comb.Row());
+        }
+
+        List<String> colors = comb.getColor();
+        for (int i = 0; i < numOfColors; i++) {
+            colors.add("#000000");
+        }
+
+        return comb;
     }
 
     private void initTable() {

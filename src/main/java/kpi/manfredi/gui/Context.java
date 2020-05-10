@@ -1,6 +1,7 @@
 package kpi.manfredi.gui;
 
 import javafx.stage.Stage;
+import kpi.manfredi.model.Data;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -16,6 +17,7 @@ public class Context {
     private Stage primaryStage;
     private Locale currentLocale;
     private int numberOfCombs;
+    private Data data;
 
     private static Context instance;
 
@@ -89,5 +91,13 @@ public class Context {
 
     public void setNumberOfCombs(int numberOfCombs) {
         this.numberOfCombs = numberOfCombs;
+    }
+
+    public Data getData() {
+        return data;
+    }
+
+    public void setData(Data data) {
+        this.data = data;
     }
 }
