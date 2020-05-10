@@ -34,10 +34,10 @@ public class CreatingScreen2Controller implements Initializable {
     private TableColumn<Input, Integer> numberColumn;
 
     @FXML
-    private TableColumn<Object, String> masonryHeightColumn;
+    private TableColumn<Input, String> masonryHeightColumn;
 
     @FXML
-    private TableColumn<Object, String> combSealColumn;
+    private TableColumn<Input, String> combSealColumn;
 
     @FXML
     private Button backButton;
@@ -75,7 +75,7 @@ public class CreatingScreen2Controller implements Initializable {
     private void initNextButtonListener() {
         nextButton.setOnAction(actionEvent -> {
             ObservableList<Input> tableItems = dataTable.getItems();
-            Data data = Context.getInstance().getData();
+            Data data = new Data();
             data.getComb().clear();
 
             for (Input item : tableItems) {
@@ -100,6 +100,7 @@ public class CreatingScreen2Controller implements Initializable {
 
                 data.getComb().add(initNewComb(numOfSteps, numOfColors));
             }
+            Context.getInstance().setData(data);
             System.out.println();
 //            ScreenController.activateScreen(Screen.COMB_SETTINGS.getPath(), Context.getInstance().getPrimaryStage());
         });
@@ -129,8 +130,18 @@ public class CreatingScreen2Controller implements Initializable {
 
     private void setSellFactory() {
         numberColumn.setCellValueFactory(new PropertyValueFactory<>("numberColumn"));
+
         masonryHeightColumn.setCellValueFactory(new PropertyValueFactory<>("masonryHeightColumn"));
+        masonryHeightColumn.setOnEditCommit(
+                t -> t.getTableView().getItems().get(
+                        t.getTablePosition().getRow()).setMasonryHeightColumn(t.getNewValue())
+        );
+
         combSealColumn.setCellValueFactory(new PropertyValueFactory<>("combSealColumn"));
+        combSealColumn.setOnEditCommit(
+                t -> t.getTableView().getItems().get(
+                        t.getTablePosition().getRow()).setCombSealColumn(t.getNewValue())
+        );
 
         masonryHeightColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         combSealColumn.setCellFactory(TextFieldTableCell.forTableColumn());
