@@ -10,8 +10,8 @@
             <xs:element name="row" maxOccurs="unbounded">
                 <xs:complexType>
                     <xs:sequence>
-                        <xs:element name="a" type="xs:nonNegativeInteger"/>
-                        <xs:element name="b" type="xs:nonNegativeInteger"/>
+                        <xs:element name="a" type="xs:unsignedInt"/>
+                        <xs:element name="b" type="xs:unsignedInt"/>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>

@@ -9,7 +9,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kpi.manfredi.gui.controllers.CreatingScreen2Controller">
    <children>
       <Label fx:id="headerLabel" alignment="CENTER" maxWidth="1.7976931348623157E308" text="Creating a graphic record">
@@ -17,11 +16,12 @@
             <Font size="20.0" />
          </font>
       </Label>
+      <Label fx:id="infoLabel" maxWidth="1.7976931348623157E308" text="Press Enter to save changes in the cell" />
       <TableView fx:id="dataTable" editable="true" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
         <columns>
           <TableColumn fx:id="numberColumn" editable="false" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" resizable="false" text="#" />
-          <TableColumn fx:id="masonryHeightColumn" maxWidth="1000.0" minWidth="100.0" prefWidth="-1.0" text="Masonry height" />
-            <TableColumn fx:id="combSealColumn" maxWidth="1000.0" minWidth="100.0" prefWidth="-1.0" text="Comb seal" />
+          <TableColumn fx:id="masonryHeightColumn" maxWidth="1000.0" minWidth="100.0" prefWidth="-1.0" sortable="false" text="Masonry height" />
+            <TableColumn fx:id="combSealColumn" maxWidth="1000.0" minWidth="100.0" prefWidth="-1.0" sortable="false" text="Comb seal" />
         </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
