@@ -76,7 +76,6 @@ public class CreatingScreen2Controller implements Initializable {
         nextButton.setOnAction(actionEvent -> {
             ObservableList<Input> tableItems = dataTable.getItems();
             Data data = new Data();
-            data.getComb().clear();
 
             for (Input item : tableItems) {
                 int numOfSteps;
@@ -102,7 +101,7 @@ public class CreatingScreen2Controller implements Initializable {
             }
             Context.getInstance().setData(data);
             System.out.println();
-//            ScreenController.activateScreen(Screen.COMB_SETTINGS.getPath(), Context.getInstance().getPrimaryStage());
+            ScreenController.activateScreen(Screen.COMB_SETTINGS.getPath(), Context.getInstance().getPrimaryStage());
         });
     }
 
