@@ -62,7 +62,9 @@ public class CombSettingScreenController implements Initializable {
 
         int i = 1;
         for (Comb comb : data.getComb()) {
-            container.getChildren().add(new Label("Label " + i++));
+            CombPanel combPanel = new CombPanel();
+            combPanel.setCombNumber(i++);
+            container.getChildren().add(combPanel);
         }
     }
 }

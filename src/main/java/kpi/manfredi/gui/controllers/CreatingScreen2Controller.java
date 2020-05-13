@@ -150,7 +150,7 @@ public class CreatingScreen2Controller implements Initializable {
     public ObservableList<Input> getListOfEmptyElements(int numberOfElements) {
         ObservableList<Input> inputs = FXCollections.observableArrayList();
         for (int i = 0; i < numberOfElements; i++) {
-            inputs.add(new Input(i + 1, "", ""));
+            inputs.add(new Input(i + 1, "1", "1"));
         }
         return inputs;
     }
