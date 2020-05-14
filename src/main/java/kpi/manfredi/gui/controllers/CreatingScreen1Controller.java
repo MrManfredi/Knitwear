@@ -68,7 +68,7 @@ public class CreatingScreen1Controller implements Initializable {
                 DialogsUtil.showAlert(
                         Alert.AlertType.WARNING,
                         MessageUtil.getMessage("warning.title"),
-                        MessageUtil.getMessage("number.format.exception")
+                        MessageUtil.getMessage("positive.number")
                 );
                 return;
             }

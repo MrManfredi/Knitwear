@@ -7,16 +7,20 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.HBox;
 import kpi.manfredi.gui.Context;
+import kpi.manfredi.gui.Screen;
 import kpi.manfredi.model.Comb;
 import kpi.manfredi.model.Data;
 import kpi.manfredi.utils.MessageUtil;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class CombSettingScreenController implements Initializable {
 
     private Data data;
+    private List<CombPanel> combPanels;
 
     @FXML
     private Label headerLabel;
@@ -43,6 +47,7 @@ public class CombSettingScreenController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         refreshLocalization();
         initData();
+        initFinishButtonListener();
     }
 
     /**
@@ -58,13 +63,26 @@ public class CombSettingScreenController implements Initializable {
     }
 
     private void initData() {
+        combPanels = new ArrayList<>();
         data = Context.getInstance().getData();
 
         int i = 1;
         for (Comb comb : data.getComb()) {
-            CombPanel combPanel = new CombPanel();
+            CombPanel combPanel = new CombPanel(comb);
             combPanel.setCombNumber(i++);
-            container.getChildren().add(combPanel);
+            combPanels.add(combPanel);
         }
+        container.getChildren().addAll(combPanels);
+    }
+
+    private void initFinishButtonListener() {
+        finishButton.setOnAction(actionEvent -> {
+            for (CombPanel panel : combPanels) {
+                if (!panel.updateComb()) {
+                    return;
+                }
+            }
+            ScreenController.activateScreen(Screen.MAIN.getPath(), Context.getInstance().getPrimaryStage());
+        });
     }
 }

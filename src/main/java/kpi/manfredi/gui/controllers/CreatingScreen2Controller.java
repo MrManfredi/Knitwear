@@ -2,7 +2,6 @@ package kpi.manfredi.gui.controllers;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -91,7 +90,7 @@ public class CreatingScreen2Controller implements Initializable {
                     DialogsUtil.showAlert(
                             Alert.AlertType.WARNING,
                             MessageUtil.getMessage("warning.title"),
-                            MessageUtil.getMessage("number.format.exception"),
+                            MessageUtil.getMessage("positive.number"),
                             MessageUtil.formatMessage("line.error", item.numberColumn)
                     );
                     return;
