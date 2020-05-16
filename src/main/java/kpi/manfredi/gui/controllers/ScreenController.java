@@ -35,7 +35,9 @@ public abstract class ScreenController {
         }
 
         stage.setScene(scene);
-        stage.setMinWidth(Math.max(scene.getWidth(), MIN_WIDTH));
-        stage.setMinHeight(Math.max(scene.getHeight(), MIN_HEIGHT));
+        stage.setMinWidth(MIN_WIDTH);
+        stage.setMinHeight(MIN_HEIGHT);
+//        stage.setMinWidth(Math.max(scene.getWidth(), MIN_WIDTH));
+//        stage.setMinHeight(Math.max(scene.getHeight(), MIN_HEIGHT));
     }
 }
