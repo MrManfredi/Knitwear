@@ -46,6 +46,7 @@ public class CombSettingScreenController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         refreshLocalization();
+        setNewCombButtonListener();
         initData();
         initFinishButtonListener();
     }
@@ -73,6 +74,17 @@ public class CombSettingScreenController implements Initializable {
             combPanels.add(combPanel);
         }
         container.getChildren().addAll(combPanels);
+    }
+
+    private void setNewCombButtonListener() {
+        newCombButton.setOnAction(actionEvent -> {
+            Comb comb = new Comb();
+            data.getComb().add(comb);
+            CombPanel combPanel = new CombPanel(comb);
+            combPanel.setCombNumber(combPanels.size() + 1);
+            combPanels.add(combPanel);
+            container.getChildren().add(combPanel);
+        });
     }
 
     private void initFinishButtonListener() {
