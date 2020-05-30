@@ -15,6 +15,7 @@ import kpi.manfredi.utils.MessageUtil;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class CombPanel extends VBox implements Initializable {
@@ -65,6 +66,8 @@ public class CombPanel extends VBox implements Initializable {
             DialogsUtil.showAlert(Alert.AlertType.INFORMATION, "Nice", "Hello, bro #" + combNumber);
         });
         initTable();
+        setAddButtonListener();
+        setRemoveButtonListener();
     }
 
     /**
@@ -79,13 +82,12 @@ public class CombPanel extends VBox implements Initializable {
 
     private void initTable() {
         setSellFactory();
-        ObservableList<TableItem> rows = FXCollections.observableArrayList();
-        for (int i = 0; i < comb.getRow().size(); i++) {
-            rows.add(new TableItem(i + 1, "1", "1"));
-        }
-        combSettingsTable.setItems(rows);
+        updateTable();
     }
 
+    /**
+     * This method is used to set sell factory to match data and cells and make them editable
+     */
     private void setSellFactory() {
         numberColumn.setCellValueFactory(new PropertyValueFactory<>("number"));
 
@@ -104,6 +106,48 @@ public class CombPanel extends VBox implements Initializable {
         aColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         bColumn.setCellFactory(TextFieldTableCell.forTableColumn());
 
+    }
+
+    /**
+     * This method is used to update table data
+     */
+    private void updateTable() {
+        ObservableList<TableItem> tableRows = FXCollections.observableArrayList();
+        List<Comb.Row> rows = comb.getRow();
+        for (int i = 0; i < rows.size(); i++) {
+            tableRows.add(new TableItem(
+                    i + 1,
+                    String.valueOf(rows.get(i).getA()),
+                    String.valueOf(rows.get(i).getB())));
+        }
+        combSettingsTable.setItems(tableRows);
+    }
+
+    private void setAddButtonListener() {
+        addButton.setOnAction(actionEvent -> {
+            combSettingsTable.getItems().add(
+                    new TableItem(combSettingsTable.getItems().size() + 1, "", ""));
+        });
+    }
+
+    private void setRemoveButtonListener() {
+        removeButton.setOnAction(actionEvent -> {
+            int selectedIndex = combSettingsTable.getSelectionModel().getSelectedIndex();
+            if (selectedIndex >= 0) {
+                combSettingsTable.getItems().remove(selectedIndex);
+                reindexRows();
+            }
+        });
+    }
+
+    /**
+     * This method is used to reindex rows numbers
+     */
+    private void reindexRows() {
+        ObservableList<TableItem> items = combSettingsTable.getItems();
+        for (int i = 0; i < items.size(); i++) {
+            items.get(i).setNumber(i + 1);
+        }
     }
 
     public void setCombNumber(int combNumber) {
