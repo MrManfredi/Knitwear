@@ -26,10 +26,9 @@ public class MainScreenController implements Initializable {
     private final double bottomPadding = 2.5 * cellSize;
     private final double rightPadding = 1.5 * cellSize;
     private final double radius = 20;
-    private int widthInCells;
-    private int heightInCells;
     private int canvasWidth;
     private int canvasHeight;
+    private Point2D origin;
 
     @FXML
     private Canvas canvas;
@@ -52,14 +51,13 @@ public class MainScreenController implements Initializable {
      * This method is used to calculate size of the grid and size of the canvas
      */
     private void calculateSizes() {
-        widthInCells = calculateColumns();
-        heightInCells = calculateNumberOfRows();
-
-        canvasWidth = cellSize * (widthInCells + 3); // 2 to padding (left and right) and 1 to numbering
-        canvasHeight = cellSize * (heightInCells + 3); // 2 to padding (top and bottom) and 1 to numbering
+        canvasWidth = cellSize * (calculateColumns() + 3); // 2 to padding (left and right) and 1 to numbering
+        canvasHeight = cellSize * (calculateNumberOfRows() + 3); // 2 to padding (top and bottom) and 1 to numbering
 
         canvas.setWidth(canvasWidth);
         canvas.setHeight(canvasHeight);
+
+        origin = new Point2D(canvasWidth - rightPadding, canvasHeight - bottomPadding);
     }
 
     /**
@@ -205,6 +203,7 @@ public class MainScreenController implements Initializable {
                 drawSegment1(row, rowNum, nextRow);
                 break;
             case CASE2:
+                drawSegment2(row, rowNum, nextRow);
                 break;
             case CASE3:
                 drawSegment3(row, rowNum, nextRow);
@@ -243,10 +242,10 @@ public class MainScreenController implements Initializable {
     }
 
     private void drawSegment1(Comb.Row row, int rowNum, Comb.Row nextRow) {
-        double endX = getOrigin().getX() - row.getB() * cellSize + radius;
-        double endY = getOrigin().getY() - rowNum * cellSize;
+        double endX = origin.getX() - row.getB() * cellSize + radius;
+        double endY = origin.getY() - rowNum * cellSize;
 
-        double side = getOrigin().getX() - nextRow.getB() * cellSize - endX;
+        double side = origin.getX() - nextRow.getB() * cellSize - endX;
 
         double angleTo =
                 Math.PI / 2 +
@@ -254,7 +253,7 @@ public class MainScreenController implements Initializable {
                         Math.atan(cellSize / (side));
 
         List<Point2D> points = MathUtil.getCirclePoints(
-                new Point2D(getOrigin().getX() - nextRow.getB() * cellSize, getOrigin().getY() - (rowNum + 1) * cellSize),
+                new Point2D(origin.getX() - nextRow.getB() * cellSize, origin.getY() - (rowNum + 1) * cellSize),
                 radius,
                 0.0,
                 angleTo);
@@ -266,19 +265,40 @@ public class MainScreenController implements Initializable {
         drawContour(points);
     }
 
+    private void drawSegment2(Comb.Row row, int rowNum, Comb.Row nextRow) {
+
+        double bottomSide = (nextRow.getA() - row.getA()) * cellSize - radius;
+        double hypotenuse = Math.sqrt(bottomSide * bottomSide + cellSize * cellSize);
+
+        double alpha = Math.atan(cellSize / bottomSide);
+        double beta = radius / hypotenuse;
+
+        Point2D center = new Point2D(
+                origin.getX() - nextRow.getA() * cellSize,
+                origin.getY() - (rowNum + 1) *cellSize);
+
+        List<Point2D> points = MathUtil.getCirclePoints(center, radius, Math.PI, Math.PI / 2 - alpha - beta);
+
+        double x = origin.getX() - row.getA() * cellSize - radius;
+        double y = origin.getY() - rowNum * cellSize;
+        points.add(new Point2D(x, y));
+
+        drawContour(points);
+    }
+
     private void drawSegment3(Comb.Row row, int rowNum, Comb.Row nextRow) {
 
         double t = Math.asin(cellSize /
                 Math.sqrt(cellSize * cellSize + Math.pow((nextRow.getB() - row.getB()) * cellSize, 2)));
         double angleTo = -(Math.PI / 2 + t);
         List<Point2D> points = MathUtil.getCirclePoints(
-                new Point2D(getOrigin().getX() - row.getB() * cellSize, getOrigin().getY() - rowNum * cellSize),
+                new Point2D(origin.getX() - row.getB() * cellSize, origin.getY() - rowNum * cellSize),
                 radius,
                 0.0,
                 angleTo);
 
         points.addAll(MathUtil.getCirclePoints(
-                new Point2D(getOrigin().getX() - nextRow.getB() * cellSize, getOrigin().getY() - (rowNum + 1) * cellSize),
+                new Point2D(origin.getX() - nextRow.getB() * cellSize, origin.getY() - (rowNum + 1) * cellSize),
                 radius,
                 Math.PI * 1.5 - t,
                 0.0
@@ -303,10 +323,6 @@ public class MainScreenController implements Initializable {
         context.moveTo(line.getStartX(), line.getStartY());
         context.lineTo(line.getEndX(), line.getEndY());
         context.stroke();
-    }
-
-    private Point2D getOrigin() {
-        return new Point2D(canvasWidth - rightPadding, canvasHeight - bottomPadding);
     }
 
     private enum Case {
