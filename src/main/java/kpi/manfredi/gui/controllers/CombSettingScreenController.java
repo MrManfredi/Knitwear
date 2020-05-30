@@ -66,6 +66,7 @@ public class CombSettingScreenController implements Initializable {
     private void initData() {
         combPanels = new ArrayList<>();
         data = Context.getInstance().getData();
+        Context.getInstance().setCombPanelsList(container.getChildren());
 
         int i = 1;
         for (Comb comb : data.getComb()) {

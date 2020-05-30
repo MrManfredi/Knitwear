@@ -1,5 +1,6 @@
 package kpi.manfredi.gui;
 
+import javafx.scene.Node;
 import javafx.stage.Stage;
 import kpi.manfredi.model.Data;
 
@@ -18,6 +19,7 @@ public class Context {
     private Locale currentLocale;
     private int numberOfCombs;
     private Data data;
+    private List<Node> combPanelsList;
 
     private static Context instance;
 
@@ -99,5 +101,13 @@ public class Context {
 
     public void setData(Data data) {
         this.data = data;
+    }
+
+    public List<Node> getCombPanelsList() {
+        return combPanelsList;
+    }
+
+    public void setCombPanelsList(List<Node> combPanelsList) {
+        this.combPanelsList = combPanelsList;
     }
 }

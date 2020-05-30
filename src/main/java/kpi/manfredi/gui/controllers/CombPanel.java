@@ -9,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.VBox;
+import kpi.manfredi.gui.Context;
 import kpi.manfredi.model.Comb;
 import kpi.manfredi.utils.DialogsUtil;
 import kpi.manfredi.utils.MessageUtil;
@@ -21,7 +22,7 @@ import java.util.ResourceBundle;
 public class CombPanel extends VBox implements Initializable {
 
     private int combNumber;
-    private Comb comb;
+    private final Comb comb;
 
     @FXML
     private Label combNameLabel;
@@ -39,7 +40,7 @@ public class CombPanel extends VBox implements Initializable {
     private TableColumn<TableItem, String> bColumn;
 
     @FXML
-    private CheckBox visibleCheckBox;
+    private Button deleteButton;
 
     @FXML
     private Button addButton;
@@ -66,6 +67,7 @@ public class CombPanel extends VBox implements Initializable {
             DialogsUtil.showAlert(Alert.AlertType.INFORMATION, "Nice", "Hello, bro #" + combNumber);
         });
         initTable();
+        setDeleteButtonListener();
         setAddButtonListener();
         setRemoveButtonListener();
     }
@@ -75,7 +77,6 @@ public class CombPanel extends VBox implements Initializable {
      */
     private void refreshLocalization() {
         combNameLabel.setText(MessageUtil.getMessage("comb.label"));
-        visibleCheckBox.setText(MessageUtil.getMessage("visible.choice.box"));
         addButton.setText(MessageUtil.getMessage("button.add"));
         removeButton.setText(MessageUtil.getMessage("button.remove"));
     }
@@ -123,11 +124,16 @@ public class CombPanel extends VBox implements Initializable {
         combSettingsTable.setItems(tableRows);
     }
 
-    private void setAddButtonListener() {
-        addButton.setOnAction(actionEvent -> {
-            combSettingsTable.getItems().add(
-                    new TableItem(combSettingsTable.getItems().size() + 1, "", ""));
+    private void setDeleteButtonListener() {
+        deleteButton.setOnAction(actionEvent -> {
+            Context.getInstance().getCombPanelsList().remove(this);
+            Context.getInstance().getData().getComb().remove(comb);
         });
+    }
+
+    private void setAddButtonListener() {
+        addButton.setOnAction(actionEvent -> combSettingsTable.getItems().add(
+                new TableItem(combSettingsTable.getItems().size() + 1, "", "")));
     }
 
     private void setRemoveButtonListener() {
