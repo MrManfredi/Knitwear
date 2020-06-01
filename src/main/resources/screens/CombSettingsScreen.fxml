@@ -56,15 +56,13 @@
       <GridPane hgap="10.0">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="20.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="20.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" percentWidth="20.0" prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
             <Button fx:id="finishButton" alignment="CENTER" maxWidth="1.7976931348623157E308" minWidth="100.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" text="Finish" GridPane.columnIndex="1" />
-            <Button fx:id="cancelButton" maxWidth="1.7976931348623157E308" minWidth="100.0" mnemonicParsing="false" text="Cancel" GridPane.columnIndex="2" />
          </children>
       </GridPane>
    </children>

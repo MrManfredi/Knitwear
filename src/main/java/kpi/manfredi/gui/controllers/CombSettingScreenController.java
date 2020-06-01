@@ -40,9 +40,6 @@ public class CombSettingScreenController implements Initializable {
     @FXML
     private Button finishButton;
 
-    @FXML
-    private Button cancelButton;
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         refreshLocalization();
@@ -60,7 +57,6 @@ public class CombSettingScreenController implements Initializable {
         partingTab.setText(MessageUtil.getMessage("parting.tab"));
         newCombButton.setText(MessageUtil.getMessage("new.comb"));
         finishButton.setText(MessageUtil.getMessage("button.finish"));
-        cancelButton.setText(MessageUtil.getMessage("button.cancel"));
     }
 
     private void initData() {

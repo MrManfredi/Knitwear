@@ -63,9 +63,6 @@ public class CombPanel extends VBox implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         refreshLocalization();
-        addButton.setOnAction(actionEvent -> {
-            DialogsUtil.showAlert(Alert.AlertType.INFORMATION, "Nice", "Hello, bro #" + combNumber);
-        });
         initTable();
         setDeleteButtonListener();
         setAddButtonListener();

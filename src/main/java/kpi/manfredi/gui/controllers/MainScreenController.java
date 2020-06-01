@@ -5,13 +5,17 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.text.TextAlignment;
 import kpi.manfredi.gui.Context;
+import kpi.manfredi.gui.Screen;
 import kpi.manfredi.model.Comb;
 import kpi.manfredi.model.Data;
 import kpi.manfredi.utils.MathUtil;
+import kpi.manfredi.utils.MessageUtil;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -31,12 +35,31 @@ public class MainScreenController implements Initializable {
     private Point2D origin;
 
     @FXML
+    private Menu editButton;
+
+    @FXML
+    private MenuItem editDigitalRecordButton;
+
+    @FXML
     private Canvas canvas;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         data = Context.getInstance().getData();
+        refreshLocalization();
+        setEditDigitalRecordButtonListener();
         initCanvas();
+    }
+
+    private void refreshLocalization() {
+        editButton.setText(MessageUtil.getMessage("menu.edit"));
+        editDigitalRecordButton.setText(MessageUtil.getMessage("menu.edit.digital.record"));
+    }
+
+    private void setEditDigitalRecordButtonListener() {
+        editDigitalRecordButton.setOnAction(actionEvent ->
+                ScreenController.activateScreen(
+                        Screen.COMB_SETTINGS.getPath(), Context.getInstance().getPrimaryStage()));
     }
 
     private void initCanvas() {
@@ -275,7 +298,7 @@ public class MainScreenController implements Initializable {
 
         Point2D center = new Point2D(
                 origin.getX() - nextRow.getA() * cellSize,
-                origin.getY() - (rowNum + 1) *cellSize);
+                origin.getY() - (rowNum + 1) * cellSize);
 
         List<Point2D> points = MathUtil.getCirclePoints(center, radius, Math.PI, Math.PI / 2 - alpha - beta);
 
