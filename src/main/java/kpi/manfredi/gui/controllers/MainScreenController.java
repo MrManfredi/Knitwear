@@ -116,7 +116,9 @@ public class MainScreenController implements Initializable {
     private Integer calculateNumberOfRows() {
         List<Integer> numbers = new ArrayList<>();
         for (Comb comb : data.getComb()) {
-            numbers.add(comb.getRow().size());
+            if (comb.isVisible()) {
+                numbers.add(comb.getRow().size());
+            }
         }
         return MathUtil.getLeastCommonMultiple(numbers);
     }
@@ -129,9 +131,11 @@ public class MainScreenController implements Initializable {
     private Integer calculateColumns() {
         int result = 0;
         for (Comb comb : data.getComb()) {
-            for (Comb.Row row : comb.getRow()) {
-                result = (int) Math.max(result, row.getA());
-                result = (int) Math.max(result, row.getB());
+            if (comb.isVisible()) {
+                for (Comb.Row row : comb.getRow()) {
+                    result = (int) Math.max(result, row.getA());
+                    result = (int) Math.max(result, row.getB());
+                }
             }
         }
         return result + 1;
@@ -202,7 +206,9 @@ public class MainScreenController implements Initializable {
 
     private void drawCombs() {
         for (Comb comb : data.getComb()) {
-            drawComb(comb);
+            if (comb.isVisible()) {
+                drawComb(comb);
+            }
         }
     }
 

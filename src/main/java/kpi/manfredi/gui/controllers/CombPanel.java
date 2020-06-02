@@ -43,6 +43,9 @@ public class CombPanel extends VBox implements Initializable {
     private Button deleteButton;
 
     @FXML
+    private CheckBox visibleCheckBox;
+
+    @FXML
     private Button addButton;
 
     @FXML
@@ -64,6 +67,7 @@ public class CombPanel extends VBox implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         refreshLocalization();
         initTable();
+        visibleCheckBox.setSelected(comb.isVisible());
         setDeleteButtonListener();
         setAddButtonListener();
         setRemoveButtonListener();
@@ -74,6 +78,7 @@ public class CombPanel extends VBox implements Initializable {
      */
     private void refreshLocalization() {
         combNameLabel.setText(MessageUtil.getMessage("comb.label"));
+        visibleCheckBox.setText(MessageUtil.getMessage("visible.choice.box"));
         addButton.setText(MessageUtil.getMessage("button.add"));
         removeButton.setText(MessageUtil.getMessage("button.remove"));
     }
@@ -208,6 +213,7 @@ public class CombPanel extends VBox implements Initializable {
             }
             i++;
         }
+        comb.setVisible(visibleCheckBox.isSelected());
         return true;
     }
 

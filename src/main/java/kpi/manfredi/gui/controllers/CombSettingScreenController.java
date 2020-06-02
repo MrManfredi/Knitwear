@@ -2,6 +2,7 @@ package kpi.manfredi.gui.controllers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
@@ -10,6 +11,7 @@ import kpi.manfredi.gui.Context;
 import kpi.manfredi.gui.Screen;
 import kpi.manfredi.model.Comb;
 import kpi.manfredi.model.Data;
+import kpi.manfredi.utils.DialogsUtil;
 import kpi.manfredi.utils.MessageUtil;
 
 import java.net.URL;
@@ -76,6 +78,7 @@ public class CombSettingScreenController implements Initializable {
     private void setNewCombButtonListener() {
         newCombButton.setOnAction(actionEvent -> {
             Comb comb = new Comb();
+            comb.setVisible(true);
             data.getComb().add(comb);
             CombPanel combPanel = new CombPanel(comb);
             combPanel.setCombNumber(combPanels.size() + 1);
@@ -91,7 +94,23 @@ public class CombSettingScreenController implements Initializable {
                     return;
                 }
             }
-            ScreenController.activateScreen(Screen.MAIN.getPath(), Context.getInstance().getPrimaryStage());
+
+            if (isVisibleCombPresent()) {
+                ScreenController.activateScreen(Screen.MAIN.getPath(), Context.getInstance().getPrimaryStage());
+            } else {
+                DialogsUtil.showAlert(Alert.AlertType.WARNING,
+                        MessageUtil.getMessage("warning.title"),
+                        MessageUtil.getMessage("comb.visibility.error"));
+            }
         });
+    }
+
+    private boolean isVisibleCombPresent() {
+        for (Comb comb : data.getComb()) {
+            if (comb.isVisible()){
+                return true;
+            }
+        }
+        return false;
     }
 }

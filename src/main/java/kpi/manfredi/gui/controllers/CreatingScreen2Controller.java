@@ -106,6 +106,7 @@ public class CreatingScreen2Controller implements Initializable {
 
     private Comb initNewComb(int numOfSteps, int numOfColors) {
         Comb comb = new Comb();
+        comb.setVisible(true);
 
         List<Comb.Row> rows = comb.getRow();
         for (int i = 0; i < numOfSteps; i++) {
