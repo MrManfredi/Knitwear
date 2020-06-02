@@ -6,7 +6,6 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
@@ -14,25 +13,14 @@
     <children>
         <MenuBar VBox.vgrow="NEVER">
             <menus>
-                <Menu mnemonicParsing="false" text="File">
+                <Menu fx:id="menuFile" mnemonicParsing="false" text="File">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="New" />
-                        <MenuItem mnemonicParsing="false" text="Open…" />
-                        <Menu mnemonicParsing="false" text="Open Recent" />
-                        <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" text="Close" />
-                        <MenuItem mnemonicParsing="false" text="Save" />
-                        <MenuItem mnemonicParsing="false" text="Save As…" />
-                        <MenuItem mnemonicParsing="false" text="Revert" />
-                        <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" text="Preferences…" />
-                        <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" text="Quit" />
+                        <MenuItem fx:id="menuSave" mnemonicParsing="false" text="Save" />
                     </items>
                 </Menu>
-                <Menu fx:id="editButton" mnemonicParsing="false" text="Edit">
+                <Menu fx:id="menuEdit" mnemonicParsing="false" text="Edit">
                     <items>
-                        <MenuItem fx:id="editDigitalRecordButton" mnemonicParsing="false" text="Edit digital record" />
+                        <MenuItem fx:id="menuEditDigitalRecord" mnemonicParsing="false" text="Edit digital record" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Help">

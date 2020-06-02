@@ -14,15 +14,21 @@ import kpi.manfredi.gui.Context;
 import kpi.manfredi.gui.Screen;
 import kpi.manfredi.model.Comb;
 import kpi.manfredi.model.Data;
+import kpi.manfredi.model.Storage;
 import kpi.manfredi.utils.MathUtil;
 import kpi.manfredi.utils.MessageUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
 public class MainScreenController implements Initializable {
+
+    private static final Logger logger = LoggerFactory.getLogger(MainScreenController.class);
 
     private Data data;
 
@@ -35,10 +41,16 @@ public class MainScreenController implements Initializable {
     private Point2D origin;
 
     @FXML
-    private Menu editButton;
+    private Menu menuFile;
 
     @FXML
-    private MenuItem editDigitalRecordButton;
+    private MenuItem menuSave;
+
+    @FXML
+    private Menu menuEdit;
+
+    @FXML
+    private MenuItem menuEditDigitalRecord;
 
     @FXML
     private Canvas canvas;
@@ -47,19 +59,32 @@ public class MainScreenController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         data = Context.getInstance().getData();
         refreshLocalization();
-        setEditDigitalRecordButtonListener();
+        setMenuEditDigitalRecordListener();
+        setMenuSaveListener();
         initCanvas();
     }
 
     private void refreshLocalization() {
-        editButton.setText(MessageUtil.getMessage("menu.edit"));
-        editDigitalRecordButton.setText(MessageUtil.getMessage("menu.edit.digital.record"));
+        menuFile.setText(MessageUtil.getMessage("menu.file"));
+        menuSave.setText(MessageUtil.getMessage("menu.save"));
+        menuEdit.setText(MessageUtil.getMessage("menu.edit"));
+        menuEditDigitalRecord.setText(MessageUtil.getMessage("menu.edit.digital.record"));
     }
 
-    private void setEditDigitalRecordButtonListener() {
-        editDigitalRecordButton.setOnAction(actionEvent ->
+    private void setMenuEditDigitalRecordListener() {
+        menuEditDigitalRecord.setOnAction(actionEvent ->
                 ScreenController.activateScreen(
                         Screen.COMB_SETTINGS.getPath(), Context.getInstance().getPrimaryStage()));
+    }
+
+    private void setMenuSaveListener() {
+        menuSave.setOnAction(actionEvent -> {
+            try {
+                Storage.saveData(data);
+            } catch (FileNotFoundException e) {
+                logger.error(e.getMessage());
+            }
+        });
     }
 
     private void initCanvas() {
@@ -196,27 +221,25 @@ public class MainScreenController implements Initializable {
     }
 
     private Case determineTheCase(int shiftComb, int shiftNextComb, int shiftRow) {
-
         if (shiftComb > 0 && shiftNextComb > 0 && shiftRow > 0) return Case.CASE1;
-        if (shiftComb < 0 && shiftNextComb < 0 && shiftRow < 0) return Case.CASE2;
-        if (shiftComb > 0 && shiftNextComb > 0 && shiftRow < 0) return Case.CASE3;
-        if (shiftComb < 0 && shiftNextComb < 0 && shiftRow > 0) return Case.CASE4;
-        if (shiftComb > 0 && shiftNextComb < 0 && shiftRow > 0) return Case.CASE5;
-        if (shiftComb < 0 && shiftNextComb > 0 && shiftRow < 0) return Case.CASE6;
-        if (shiftComb > 0 && shiftNextComb < 0 && shiftRow < 0) return Case.CASE7;
-        if (shiftComb < 0 && shiftNextComb > 0 && shiftRow > 0) return Case.CASE8;
-        if (shiftComb == 0 && shiftNextComb > 0 && shiftRow > 0) return Case.CASE9;
-        if (shiftComb == 0 && shiftNextComb < 0 && shiftRow < 0) return Case.CASE10;
-        if (shiftComb == 0 && shiftNextComb > 0 && shiftRow < 0) return Case.CASE11;
-        if (shiftComb == 0 && shiftNextComb < 0 && shiftRow > 0) return Case.CASE12;
-        if (shiftComb > 0 && shiftNextComb == 0 && shiftRow > 0) return Case.CASE13;
-        if (shiftComb < 0 && shiftNextComb == 0 && shiftRow < 0) return Case.CASE14;
-        if (shiftComb > 0 && shiftNextComb == 0 && shiftRow < 0) return Case.CASE15;
-        if (shiftComb < 0 && shiftNextComb == 0 && shiftRow > 0) return Case.CASE16;
-        if (shiftComb == 0 && shiftNextComb == 0 && shiftRow < 0) return Case.CASE17;
-        if (shiftComb == 0 && shiftNextComb == 0 && shiftRow > 0) return Case.CASE18;
-
-        return null;
+        else if (shiftComb < 0 && shiftNextComb < 0 && shiftRow < 0) return Case.CASE2;
+        else if (shiftComb > 0 && shiftNextComb > 0 && shiftRow < 0) return Case.CASE3;
+        else if (shiftComb < 0 && shiftNextComb < 0 && shiftRow > 0) return Case.CASE4;
+        else if (shiftComb > 0 && shiftNextComb < 0 && shiftRow > 0) return Case.CASE5;
+        else if (shiftComb < 0 && shiftNextComb > 0 && shiftRow < 0) return Case.CASE6;
+        else if (shiftComb > 0 && shiftNextComb < 0 && shiftRow < 0) return Case.CASE7;
+        else if (shiftComb < 0 && shiftNextComb > 0 && shiftRow > 0) return Case.CASE8;
+        else if (shiftComb == 0 && shiftNextComb > 0 && shiftRow > 0) return Case.CASE9;
+        else if (shiftComb == 0 && shiftNextComb < 0 && shiftRow < 0) return Case.CASE10;
+        else if (shiftComb == 0 && shiftNextComb > 0 && shiftRow < 0) return Case.CASE11;
+        else if (shiftComb == 0 && shiftNextComb < 0 && shiftRow > 0) return Case.CASE12;
+        else if (shiftComb > 0 && shiftNextComb == 0 && shiftRow > 0) return Case.CASE13;
+        else if (shiftComb < 0 && shiftNextComb == 0 && shiftRow < 0) return Case.CASE14;
+        else if (shiftComb > 0 && shiftNextComb == 0 && shiftRow < 0) return Case.CASE15;
+        else if (shiftComb < 0 && shiftNextComb == 0 && shiftRow > 0) return Case.CASE16;
+        else if (shiftComb == 0 && shiftNextComb == 0 && shiftRow < 0) return Case.CASE17;
+        else if (shiftComb == 0 && shiftNextComb == 0 && shiftRow > 0) return Case.CASE18;
+        else return Case.EMPTY;
     }
 
     private void drawSegment(Case theCase, Comb.Row row, int rowNum, Comb.Row nextRow) {
@@ -261,6 +284,8 @@ public class MainScreenController implements Initializable {
                 break;
             case CASE18:
                 break;
+            default:
+                // do nothing
         }
     }
 
@@ -366,6 +391,7 @@ public class MainScreenController implements Initializable {
         CASE15,
         CASE16,
         CASE17,
-        CASE18;
+        CASE18,
+        EMPTY
     }
 }
