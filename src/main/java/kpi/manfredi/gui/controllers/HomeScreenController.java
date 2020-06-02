@@ -6,8 +6,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import kpi.manfredi.gui.Context;
 import kpi.manfredi.gui.Screen;
+import kpi.manfredi.model.Data;
+import kpi.manfredi.model.Storage;
 import kpi.manfredi.utils.MessageUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -16,6 +21,8 @@ import java.util.ResourceBundle;
  * @author manfredi
  */
 public class HomeScreenController implements Initializable {
+
+    private static final Logger logger = LoggerFactory.getLogger(HomeScreenController.class);
 
     @FXML
     private Button createButton;
@@ -31,6 +38,7 @@ public class HomeScreenController implements Initializable {
         refreshLocalization();
         initLanguageChangeListener();
         initCreateButtonListener();
+        setOpenButtonListener();
     }
 
     /**
@@ -55,6 +63,17 @@ public class HomeScreenController implements Initializable {
                 Screen.CREATING1.getPath(),
                 Context.getInstance().getPrimaryStage()
         ));
+    }
+
+    private void setOpenButtonListener() {
+        openButton.setOnAction(actionEvent -> {
+            try {
+                Context.getInstance().setData(Storage.getData());
+                ScreenController.activateScreen(Screen.MAIN.getPath(), Context.getInstance().getPrimaryStage());
+            } catch (FileNotFoundException e) {
+                logger.error(e.getMessage());
+            }
+        });
     }
 
 }
