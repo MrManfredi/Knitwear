@@ -261,6 +261,7 @@ public class MainScreenController implements Initializable {
                 drawSegment3(row, rowNum, nextRow);
                 break;
             case CASE4:
+                drawSegment4(row, rowNum, nextRow);
                 break;
             case CASE5:
                 break;
@@ -356,6 +357,26 @@ public class MainScreenController implements Initializable {
                 radius,
                 Math.PI * 1.5 - t,
                 0.0
+        ));
+
+        drawContour(points);
+    }
+
+    private void drawSegment4(Comb.Row row, int rowNum, Comb.Row nextRow) {
+
+        double t = Math.atan(1.0 / (row.getA() - nextRow.getA()));
+        double angleTo = (Math.PI * 1.5 + t);
+        List<Point2D> points = MathUtil.getCirclePoints(
+                new Point2D(origin.getX() - row.getA() * cellSize, origin.getY() - rowNum * cellSize),
+                radius,
+                Math.PI,
+                angleTo);
+
+        points.addAll(MathUtil.getCirclePoints(
+                new Point2D(origin.getX() - nextRow.getA() * cellSize, origin.getY() - (rowNum + 1) * cellSize),
+                radius,
+                - Math.PI * 0.5 + t,
+                Math.PI
         ));
 
         drawContour(points);

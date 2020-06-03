@@ -60,6 +60,15 @@ public class MathUtil {
         return result;
     }
 
+    /**
+     * This method is used to calculate coordinates of points of circle
+     *
+     * @param center center of circle
+     * @param radius radius of circle
+     * @param angleFrom angle from in radians
+     * @param angleTo angle to in radians
+     * @return points of circle
+     */
     public static List<Point2D> getCirclePoints(Point2D center, double radius, double angleFrom, double angleTo) {
         List<Point2D> circlePoints = new ArrayList<>();
         angleFrom = -angleFrom;
