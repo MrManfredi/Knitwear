@@ -5,16 +5,17 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
 import javafx.scene.text.TextAlignment;
 import kpi.manfredi.gui.Context;
 import kpi.manfredi.gui.Screen;
 import kpi.manfredi.model.Comb;
 import kpi.manfredi.model.Data;
 import kpi.manfredi.model.Storage;
+import kpi.manfredi.utils.DialogsUtil;
 import kpi.manfredi.utils.MathUtil;
 import kpi.manfredi.utils.MessageUtil;
 import org.slf4j.Logger;
@@ -24,6 +25,7 @@ import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class MainScreenController implements Initializable {
@@ -47,6 +49,9 @@ public class MainScreenController implements Initializable {
     private MenuItem menuSave;
 
     @FXML
+    private MenuItem menuCloseProject;
+
+    @FXML
     private Menu menuEdit;
 
     @FXML
@@ -61,11 +66,13 @@ public class MainScreenController implements Initializable {
         refreshLocalization();
         setMenuEditDigitalRecordListener();
         setMenuSaveListener();
+        setMenuCloseProjectListener();
         initCanvas();
     }
 
     private void refreshLocalization() {
         menuFile.setText(MessageUtil.getMessage("menu.file"));
+        menuCloseProject.setText(MessageUtil.getMessage("menu.close.project"));
         menuSave.setText(MessageUtil.getMessage("menu.save"));
         menuEdit.setText(MessageUtil.getMessage("menu.edit"));
         menuEditDigitalRecord.setText(MessageUtil.getMessage("menu.edit.digital.record"));
@@ -83,6 +90,18 @@ public class MainScreenController implements Initializable {
                 Storage.saveData(data);
             } catch (FileNotFoundException e) {
                 logger.error(e.getMessage());
+            }
+        });
+    }
+
+    private void setMenuCloseProjectListener() {
+        menuCloseProject.setOnAction(actionEvent -> {
+            Optional<ButtonType> response = DialogsUtil.showConfirmationDialog(
+                    MessageUtil.getMessage("menu.close.project"),
+                    MessageUtil.getMessage("close.project.confirm")
+            );
+            if (response.isPresent() && response.get() == ButtonType.OK) {
+                ScreenController.activateScreen(Screen.HOME.getPath(), Context.getInstance().getPrimaryStage());
             }
         });
     }
@@ -303,7 +322,7 @@ public class MainScreenController implements Initializable {
                 drawSegment17(row, rowNum, nextRow);
                 break;
             case CASE18:
-                drawSegment18 (row, rowNum, nextRow);
+                drawSegment18(row, rowNum, nextRow);
                 break;
             default:
                 // do nothing
@@ -390,7 +409,7 @@ public class MainScreenController implements Initializable {
         points.addAll(MathUtil.getCirclePoints(
                 new Point2D(origin.getX() - nextRow.getA() * cellSize, origin.getY() - (rowNum + 1) * cellSize),
                 radius,
-                - Math.PI * 0.5 + t,
+                t - Math.PI * 0.5,
                 Math.PI
         ));
 
@@ -421,31 +440,44 @@ public class MainScreenController implements Initializable {
         drawContour(points);
     }
 
-    private void drawSegment6(Comb.Row row, int rowNum, Comb.Row nextRow) {}
+    private void drawSegment6(Comb.Row row, int rowNum, Comb.Row nextRow) {
+    }
 
-    private void drawSegment7(Comb.Row row, int rowNum, Comb.Row nextRow) {}
+    private void drawSegment7(Comb.Row row, int rowNum, Comb.Row nextRow) {
+    }
 
-    private void drawSegment8(Comb.Row row, int rowNum, Comb.Row nextRow) {}
+    private void drawSegment8(Comb.Row row, int rowNum, Comb.Row nextRow) {
+    }
 
-    private void drawSegment9(Comb.Row row, int rowNum, Comb.Row nextRow) {}
+    private void drawSegment9(Comb.Row row, int rowNum, Comb.Row nextRow) {
+    }
 
-    private void drawSegment10(Comb.Row row, int rowNum, Comb.Row nextRow) {}
+    private void drawSegment10(Comb.Row row, int rowNum, Comb.Row nextRow) {
+    }
 
-    private void drawSegment11(Comb.Row row, int rowNum, Comb.Row nextRow) {}
+    private void drawSegment11(Comb.Row row, int rowNum, Comb.Row nextRow) {
+    }
 
-    private void drawSegment12(Comb.Row row, int rowNum, Comb.Row nextRow) {}
+    private void drawSegment12(Comb.Row row, int rowNum, Comb.Row nextRow) {
+    }
 
-    private void drawSegment13(Comb.Row row, int rowNum, Comb.Row nextRow) {}
+    private void drawSegment13(Comb.Row row, int rowNum, Comb.Row nextRow) {
+    }
 
-    private void drawSegment14(Comb.Row row, int rowNum, Comb.Row nextRow) {}
+    private void drawSegment14(Comb.Row row, int rowNum, Comb.Row nextRow) {
+    }
 
-    private void drawSegment15(Comb.Row row, int rowNum, Comb.Row nextRow) {}
+    private void drawSegment15(Comb.Row row, int rowNum, Comb.Row nextRow) {
+    }
 
-    private void drawSegment16(Comb.Row row, int rowNum, Comb.Row nextRow) {}
+    private void drawSegment16(Comb.Row row, int rowNum, Comb.Row nextRow) {
+    }
 
-    private void drawSegment17(Comb.Row row, int rowNum, Comb.Row nextRow) {}
+    private void drawSegment17(Comb.Row row, int rowNum, Comb.Row nextRow) {
+    }
 
-    private void drawSegment18(Comb.Row row, int rowNum, Comb.Row nextRow) {}
+    private void drawSegment18(Comb.Row row, int rowNum, Comb.Row nextRow) {
+    }
 
     private void drawContour(List<Point2D> points) {
         GraphicsContext context = canvas.getGraphicsContext2D();
@@ -454,14 +486,6 @@ public class MainScreenController implements Initializable {
         for (Point2D point : points) {
             context.lineTo(point.getX(), point.getY());
         }
-        context.stroke();
-    }
-
-    private void drawLine(Line line) {
-        GraphicsContext context = canvas.getGraphicsContext2D();
-        context.beginPath();
-        context.moveTo(line.getStartX(), line.getStartY());
-        context.lineTo(line.getEndX(), line.getEndY());
         context.stroke();
     }
 
