@@ -500,6 +500,31 @@ public class MainScreenController implements Initializable {
     }
 
     private void drawSegment9(Comb.Row row, int rowNum, Comb.Row nextRow) {
+        List<Point2D> points = new ArrayList<>();
+        double x = origin.getX() - (row.getA() - 0.5) * cellSize;
+        double y1 = origin.getY() - rowNum * cellSize;
+        double y2 = y1 - cellSize * 0.3;
+        points.add(new Point2D(x, y1));
+        points.add(new Point2D(x, y2));
+        Point2D center = new Point2D(
+                origin.getX() - nextRow.getB() * cellSize, origin.getY() - (rowNum + 1) * cellSize);
+
+
+        double bottomSide = (row.getA() - nextRow.getB() - 0.5) * cellSize;
+        double side = y2 - center.getY();
+        double hypotenuse = Math.sqrt(bottomSide * bottomSide + side * side);
+
+        double beta = Math.atan(side / bottomSide);
+        double alpha = Math.asin(radius / hypotenuse);
+        double t = alpha + beta;
+
+        points.addAll(MathUtil.getCirclePoints(
+                center,
+                radius,
+                Math.PI * 0.5 + t,
+                0));
+
+        drawContour(points);
     }
 
     private void drawSegment10(Comb.Row row, int rowNum, Comb.Row nextRow) {
