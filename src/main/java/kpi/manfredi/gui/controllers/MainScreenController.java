@@ -467,7 +467,6 @@ public class MainScreenController implements Initializable {
 
         double beta = Math.atan(cellSize / bottomSide);
         double alpha = Math.acos(2 * radius / hypotenuse);
-
         double t = alpha - beta;
 
         Point2D center1 = new Point2D(
@@ -482,6 +481,22 @@ public class MainScreenController implements Initializable {
     }
 
     private void drawSegment8(Comb.Row row, int rowNum, Comb.Row nextRow) {
+        double bottomSide = (row.getA() - nextRow.getB()) * cellSize;
+        double hypotenuse = Math.sqrt(bottomSide * bottomSide + cellSize * cellSize);
+
+        double beta = Math.atan(cellSize / bottomSide);
+        double alpha = Math.acos(2 * radius / hypotenuse);
+        double t = alpha - beta;
+
+        Point2D center1 = new Point2D(
+                origin.getX() - row.getA() * cellSize, origin.getY() - rowNum * cellSize);
+        List<Point2D> points = MathUtil.getCirclePoints(center1, radius, Math.PI, Math.PI * 2 - t);
+
+        Point2D center2 = new Point2D(
+                origin.getX() - nextRow.getB() * cellSize, origin.getY() - (rowNum + 1) * cellSize);
+        points.addAll(MathUtil.getCirclePoints(center2, radius, Math.PI - t, 0));
+
+        drawContour(points);
     }
 
     private void drawSegment9(Comb.Row row, int rowNum, Comb.Row nextRow) {
