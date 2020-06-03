@@ -264,32 +264,46 @@ public class MainScreenController implements Initializable {
                 drawSegment4(row, rowNum, nextRow);
                 break;
             case CASE5:
+                drawSegment5(row, rowNum, nextRow);
                 break;
             case CASE6:
+                drawSegment6(row, rowNum, nextRow);
                 break;
             case CASE7:
+                drawSegment7(row, rowNum, nextRow);
                 break;
             case CASE8:
+                drawSegment8(row, rowNum, nextRow);
                 break;
             case CASE9:
+                drawSegment9(row, rowNum, nextRow);
                 break;
             case CASE10:
+                drawSegment10(row, rowNum, nextRow);
                 break;
             case CASE11:
+                drawSegment11(row, rowNum, nextRow);
                 break;
             case CASE12:
+                drawSegment12(row, rowNum, nextRow);
                 break;
             case CASE13:
+                drawSegment13(row, rowNum, nextRow);
                 break;
             case CASE14:
+                drawSegment14(row, rowNum, nextRow);
                 break;
             case CASE15:
+                drawSegment15(row, rowNum, nextRow);
                 break;
             case CASE16:
+                drawSegment16(row, rowNum, nextRow);
                 break;
             case CASE17:
+                drawSegment17(row, rowNum, nextRow);
                 break;
             case CASE18:
+                drawSegment18 (row, rowNum, nextRow);
                 break;
             default:
                 // do nothing
@@ -297,23 +311,24 @@ public class MainScreenController implements Initializable {
     }
 
     private void drawSegment1(Comb.Row row, int rowNum, Comb.Row nextRow) {
-        double endX = origin.getX() - row.getB() * cellSize + radius;
-        double endY = origin.getY() - rowNum * cellSize;
+        double x = origin.getX() - row.getB() * cellSize + radius;
+        double y = origin.getY() - rowNum * cellSize;
 
-        double side = origin.getX() - nextRow.getB() * cellSize - endX;
+        double bottomSide = (row.getB() - nextRow.getB()) * cellSize - radius;
+        double hypotenuse = Math.sqrt(bottomSide * bottomSide + cellSize * cellSize);
 
-        double angleTo =
-                Math.PI / 2 +
-                        Math.asin(radius / Math.sqrt(cellSize * cellSize + Math.pow(side, 2))) +
-                        Math.atan(cellSize / (side));
+        double beta = Math.atan(cellSize / bottomSide);
+        double alpha = Math.asin(radius / hypotenuse);
+
+        double t = alpha + beta;
 
         List<Point2D> points = MathUtil.getCirclePoints(
                 new Point2D(origin.getX() - nextRow.getB() * cellSize, origin.getY() - (rowNum + 1) * cellSize),
                 radius,
                 0.0,
-                angleTo);
+                Math.PI * 0.5 + t);
 
-        Point2D lastPoint = new Point2D(endX, endY);
+        Point2D lastPoint = new Point2D(x, y);
 
         points.add(lastPoint);
 
@@ -326,7 +341,7 @@ public class MainScreenController implements Initializable {
         double hypotenuse = Math.sqrt(bottomSide * bottomSide + cellSize * cellSize);
 
         double alpha = Math.atan(cellSize / bottomSide);
-        double beta = radius / hypotenuse;
+        double beta = Math.asin(radius / hypotenuse);
 
         Point2D center = new Point2D(
                 origin.getX() - nextRow.getA() * cellSize,
@@ -381,6 +396,56 @@ public class MainScreenController implements Initializable {
 
         drawContour(points);
     }
+
+    private void drawSegment5(Comb.Row row, int rowNum, Comb.Row nextRow) {
+        double x = origin.getX() - row.getB() * cellSize + radius;
+        double y = origin.getY() - rowNum * cellSize;
+
+        List<Point2D> points = new ArrayList<>();
+        points.add(new Point2D(x, y));
+
+        double bottomSide = (row.getB() - nextRow.getA()) * cellSize - radius;
+        double hypotenuse = Math.sqrt(bottomSide * bottomSide + cellSize * cellSize);
+
+        double beta = Math.atan(bottomSide / cellSize);
+        double alpha = Math.asin(radius / hypotenuse);
+        double t = Math.PI * 0.5 - alpha - beta;
+
+        points.addAll(MathUtil.getCirclePoints(
+                new Point2D(origin.getX() - nextRow.getA() * cellSize, origin.getY() - (rowNum + 1) * cellSize),
+                radius,
+                t - Math.PI * 0.5,
+                Math.PI
+        ));
+
+        drawContour(points);
+    }
+
+    private void drawSegment6(Comb.Row row, int rowNum, Comb.Row nextRow) {}
+
+    private void drawSegment7(Comb.Row row, int rowNum, Comb.Row nextRow) {}
+
+    private void drawSegment8(Comb.Row row, int rowNum, Comb.Row nextRow) {}
+
+    private void drawSegment9(Comb.Row row, int rowNum, Comb.Row nextRow) {}
+
+    private void drawSegment10(Comb.Row row, int rowNum, Comb.Row nextRow) {}
+
+    private void drawSegment11(Comb.Row row, int rowNum, Comb.Row nextRow) {}
+
+    private void drawSegment12(Comb.Row row, int rowNum, Comb.Row nextRow) {}
+
+    private void drawSegment13(Comb.Row row, int rowNum, Comb.Row nextRow) {}
+
+    private void drawSegment14(Comb.Row row, int rowNum, Comb.Row nextRow) {}
+
+    private void drawSegment15(Comb.Row row, int rowNum, Comb.Row nextRow) {}
+
+    private void drawSegment16(Comb.Row row, int rowNum, Comb.Row nextRow) {}
+
+    private void drawSegment17(Comb.Row row, int rowNum, Comb.Row nextRow) {}
+
+    private void drawSegment18(Comb.Row row, int rowNum, Comb.Row nextRow) {}
 
     private void drawContour(List<Point2D> points) {
         GraphicsContext context = canvas.getGraphicsContext2D();
