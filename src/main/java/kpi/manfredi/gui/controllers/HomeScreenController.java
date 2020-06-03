@@ -67,11 +67,19 @@ public class HomeScreenController implements Initializable {
 
     private void setOpenButtonListener() {
         openButton.setOnAction(actionEvent -> {
+            Data data = null;
+
             try {
-                Context.getInstance().setData(Storage.getData());
-                ScreenController.activateScreen(Screen.MAIN.getPath(), Context.getInstance().getPrimaryStage());
+                data = Storage.getData();
             } catch (FileNotFoundException e) {
                 logger.error(e.getMessage());
+            }
+
+            if (data != null) {
+                Context.getInstance().setData(data);
+                ScreenController.activateScreen(
+                        Screen.COMB_SETTINGS.getPath(),
+                        Context.getInstance().getPrimaryStage());
             }
         });
     }

@@ -89,6 +89,7 @@ abstract public class Storage {
      * This method is used to read combs settings from file
      *
      * @throws FileNotFoundException schema file not found
+     * @return {@code Data} instance if validation successful. Otherwise null
      */
     public static Data getData() throws FileNotFoundException {
         Data data = null;
