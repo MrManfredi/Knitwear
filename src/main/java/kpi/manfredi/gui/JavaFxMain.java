@@ -26,6 +26,8 @@ public class JavaFxMain extends Application {
                 primaryStage
         );
 
+        primaryStage.setX(100);
+        primaryStage.setY(50);
         primaryStage.setTitle("Knitwear");
         primaryStage.show();
     }
