@@ -615,9 +615,33 @@ public class MainScreenController implements Initializable {
     }
 
     private void drawSegment13(Comb.Row row, int rowNum, Comb.Row nextRow) {
+        List<Point2D> points = new ArrayList<>();
+        double x1 = origin.getX() - row.getB() * cellSize + radius;
+        double y1 = origin.getY() - rowNum * cellSize;
+        double x2 = origin.getX() - (nextRow.getA() - 0.5) * cellSize;
+        double y3 = origin.getY() - (rowNum + 1) * cellSize;
+        double y2 = y3 + cellSize * 0.3;
+
+        points.add(new Point2D(x1, y1));
+        points.add(new Point2D(x2, y2));
+        points.add(new Point2D(x2, y3));
+
+        drawContour(points);
     }
 
     private void drawSegment14(Comb.Row row, int rowNum, Comb.Row nextRow) {
+        List<Point2D> points = new ArrayList<>();
+        double x1 = origin.getX() - row.getA() * cellSize - radius;
+        double y1 = origin.getY() - rowNum * cellSize;
+        double x2 = origin.getX() - (nextRow.getA() - 0.5) * cellSize;
+        double y3 = origin.getY() - (rowNum + 1) * cellSize;
+        double y2 = y3 + cellSize * 0.3;
+
+        points.add(new Point2D(x1, y1));
+        points.add(new Point2D(x2, y2));
+        points.add(new Point2D(x2, y3));
+
+        drawContour(points);
     }
 
     private void drawSegment15(Comb.Row row, int rowNum, Comb.Row nextRow) {
