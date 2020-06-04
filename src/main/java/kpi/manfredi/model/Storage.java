@@ -56,7 +56,7 @@ abstract public class Storage {
                         MessageUtil.formatMessage("data.saved", file.getName()));
 
             } catch (JAXBException | SAXException e) {
-                logger.error(e.getMessage());
+                showValidationFailedAlert(e);
             }
         }
     }
@@ -88,8 +88,8 @@ abstract public class Storage {
     /**
      * This method is used to read combs settings from file
      *
-     * @throws FileNotFoundException schema file not found
      * @return {@code Data} instance if validation successful. Otherwise null
+     * @throws FileNotFoundException schema file not found
      */
     public static Data getData() throws FileNotFoundException {
         Data data = null;
@@ -117,7 +117,7 @@ abstract public class Storage {
     /**
      * This method is used to show alert about exception cause
      *
-     * @param e exception
+     * @param e    exception
      * @param file file in which validation failed
      */
     private static void handleParsingException(Exception e, File file) {
@@ -127,7 +127,24 @@ abstract public class Storage {
         showAlert(
                 Alert.AlertType.ERROR,
                 getMessage("error.title"),
-                formatMessage("file.validation.failed", file, constraintViolation)
+                formatMessage("file.validation.failed", file),
+                constraintViolation
+        );
+    }
+
+    /**
+     * This method is used to show alert about exception cause
+     *
+     * @param e exception
+     */
+    private static void showValidationFailedAlert(Exception e) {
+        String constraintViolation = e.getCause().getMessage().
+                substring(e.getCause().getMessage().indexOf(':') + 2);
+
+        showAlert(
+                Alert.AlertType.ERROR,
+                getMessage("error.title"),
+                constraintViolation
         );
     }
 

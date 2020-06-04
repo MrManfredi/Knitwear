@@ -171,6 +171,14 @@ public class CombPanel extends VBox implements Initializable {
      * <br> {@code true} when everything is successful
      */
     public boolean updateComb() {
+        if (combSettingsTable.getItems().size() < 2) {
+            DialogsUtil.showAlert(
+                    Alert.AlertType.WARNING,
+                    MessageUtil.getMessage("warning.title"),
+                    MessageUtil.getMessage("number.of.rows.error")
+            );
+            return false;
+        }
         int i = 0;
         for (TableItem tableItem : combSettingsTable.getItems()) {
             Comb.Row row;

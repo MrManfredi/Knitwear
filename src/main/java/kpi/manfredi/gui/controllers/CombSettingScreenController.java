@@ -79,6 +79,7 @@ public class CombSettingScreenController implements Initializable {
         newCombButton.setOnAction(actionEvent -> {
             Comb comb = new Comb();
             comb.setVisible(true);
+            comb.getColor().add("#000000");
             data.getComb().add(comb);
             CombPanel combPanel = new CombPanel(comb);
             combPanel.setCombNumber(combPanels.size() + 1);
@@ -107,7 +108,7 @@ public class CombSettingScreenController implements Initializable {
 
     private boolean isVisibleCombPresent() {
         for (Comb comb : data.getComb()) {
-            if (comb.isVisible()){
+            if (comb.isVisible()) {
                 return true;
             }
         }
