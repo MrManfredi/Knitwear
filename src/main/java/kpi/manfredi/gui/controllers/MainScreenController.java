@@ -40,6 +40,7 @@ public class MainScreenController implements Initializable {
     private final double radius = 20;
     private int canvasWidth;
     private int canvasHeight;
+    private int numberOfRows;
     private Point2D origin;
 
     @FXML
@@ -119,7 +120,8 @@ public class MainScreenController implements Initializable {
      */
     private void calculateSizes() {
         canvasWidth = cellSize * (calculateColumns() + 3); // 2 to padding (left and right) and 1 to numbering
-        canvasHeight = cellSize * (calculateNumberOfRows() + 3); // 2 to padding (top and bottom) and 1 to numbering
+        numberOfRows = calculateNumberOfRows();
+        canvasHeight = cellSize * (numberOfRows + 3); // 2 to padding (top and bottom) and 1 to numbering
 
         canvas.setWidth(canvasWidth);
         canvas.setHeight(canvasHeight);
@@ -233,9 +235,9 @@ public class MainScreenController implements Initializable {
 
     private void drawComb(Comb comb) {
         List<Comb.Row> rows = comb.getRow();
-        for (int i = 0; i < rows.size() - 1; i++) {
-            Comb.Row row = rows.get(i);
-            Comb.Row nextRow = rows.get(i + 1);
+        for (int i = 0; i < numberOfRows - 1; i++) {
+            Comb.Row row = rows.get(i % rows.size());
+            Comb.Row nextRow = rows.get((i + 1) % rows.size());
             int shiftComb = (int) (row.getA() - row.getB());
             int shiftNextComb = (int) (nextRow.getA() - nextRow.getB());
             int shiftRow = (int) (Math.max(row.getA(), row.getB()) - Math.max(nextRow.getA(), nextRow.getB()));
