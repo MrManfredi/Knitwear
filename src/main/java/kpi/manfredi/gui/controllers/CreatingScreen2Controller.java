@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.paint.Color;
 import kpi.manfredi.gui.Context;
 import kpi.manfredi.gui.Screen;
 import kpi.manfredi.model.Comb;
@@ -115,7 +116,7 @@ public class CreatingScreen2Controller implements Initializable {
 
         List<String> colors = comb.getColor();
         for (int i = 0; i < numOfColors; i++) {
-            colors.add("#000000");
+            colors.add(Color.BLACK.toString());
         }
 
         return comb;

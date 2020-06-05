@@ -9,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import kpi.manfredi.gui.Context;
 import kpi.manfredi.model.Comb;
 import kpi.manfredi.utils.DialogsUtil;
@@ -16,6 +17,7 @@ import kpi.manfredi.utils.MessageUtil;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -23,9 +25,13 @@ public class CombPanel extends VBox implements Initializable {
 
     private int combNumber;
     private final Comb comb;
+    private List<ColorPicker> colorPickers;
 
     @FXML
     private Label combNameLabel;
+
+    @FXML
+    private Tab settingsTab;
 
     @FXML
     private TableView<TableItem> combSettingsTable;
@@ -51,6 +57,18 @@ public class CombPanel extends VBox implements Initializable {
     @FXML
     private Button removeButton;
 
+    @FXML
+    private Tab colorsTab;
+
+    @FXML
+    private Button addColorButton;
+
+    @FXML
+    private Button removeColorButton;
+
+    @FXML
+    private VBox container;
+
     public CombPanel(Comb comb) {
         this.comb = comb;
         try {
@@ -67,10 +85,13 @@ public class CombPanel extends VBox implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         refreshLocalization();
         initTable();
+        initColors();
         visibleCheckBox.setSelected(comb.isVisible());
         setDeleteButtonListener();
         setAddButtonListener();
         setRemoveButtonListener();
+        setAddColorButtonListener();
+        setRemoveColorButtonListener();
     }
 
     /**
@@ -78,9 +99,13 @@ public class CombPanel extends VBox implements Initializable {
      */
     private void refreshLocalization() {
         combNameLabel.setText(MessageUtil.getMessage("comb.label"));
+        settingsTab.setText(MessageUtil.getMessage("digital.record.tab"));
         visibleCheckBox.setText(MessageUtil.getMessage("visible.choice.box"));
         addButton.setText(MessageUtil.getMessage("button.add"));
         removeButton.setText(MessageUtil.getMessage("button.remove"));
+        colorsTab.setText(MessageUtil.getMessage("parting.tab"));
+        addColorButton.setText(MessageUtil.getMessage("button.add"));
+        removeColorButton.setText(MessageUtil.getMessage("button.remove"));
     }
 
     private void initTable() {
@@ -158,27 +183,85 @@ public class CombPanel extends VBox implements Initializable {
         }
     }
 
+    private void initColors() {
+        colorPickers = new LinkedList<>();
+        for (String color : comb.getColor()) {
+            ColorPicker colorPicker = new ColorPicker(Color.web(color));
+            colorPicker.setMinHeight(25);
+            colorPickers.add(colorPicker);
+        }
+        container.getChildren().addAll(colorPickers);
+    }
+
+    private void setAddColorButtonListener() {
+        addColorButton.setOnAction(actionEvent -> {
+            ColorPicker colorPicker = new ColorPicker(Color.BLACK);
+            colorPicker.setMinHeight(25);
+            colorPickers.add(colorPicker);
+            container.getChildren().addAll(colorPicker);
+        });
+    }
+
+    private void setRemoveColorButtonListener() {
+        removeColorButton.setOnAction(actionEvent -> {
+            if (colorPickers.size() > 1) {
+                ColorPicker removedCp = colorPickers.remove(colorPickers.size() - 1);
+                container.getChildren().remove(removedCp);
+            }
+        });
+    }
+
     public void setCombNumber(int combNumber) {
         this.combNumber = combNumber;
         combNameLabel.setText(MessageUtil.getMessage("comb.label") + " " + combNumber);
     }
 
     /**
-     * This method is used to read data from table to {@code Comb} entity.
-     * Shows alerts when errors occurs in input data/
+     * This method is used to synchronize comb data with panel.
+     * Shows alerts when errors occurs in input data
      *
      * @return {@code false} when errors occurs in input data
      * <br> {@code true} when everything is successful
      */
     public boolean updateComb() {
+
+        if (validateRowCount()) return false;
+
+        if (updateRows()) return false;
+
+        comb.setVisible(visibleCheckBox.isSelected());
+        updateColors();
+
+        return true;
+    }
+
+    /**
+     * This method is used to read data from table to {@code Comb} entity.
+     * Shows alert when rows less then two
+     *
+     * @return {@code true} when rows less then two
+     * <br> {@code false} when everything is ok
+     */
+    private boolean validateRowCount() {
         if (combSettingsTable.getItems().size() < 2) {
             DialogsUtil.showAlert(
                     Alert.AlertType.WARNING,
-                    MessageUtil.getMessage("warning.title"),
+                    MessageUtil.getMessage("comb.label") + " " + combNumber,
                     MessageUtil.getMessage("number.of.rows.error")
             );
-            return false;
+            return true;
         }
+        return false;
+    }
+
+    /**
+     * This method is used to read data from table to {@code Comb} entity.
+     * Shows alerts when errors occurs in input data
+     *
+     * @return {@code true} when errors occurs
+     * <br> {@code false} when everything is ok
+     */
+    private boolean updateRows() {
         int i = 0;
         for (TableItem tableItem : combSettingsTable.getItems()) {
             Comb.Row row;
@@ -209,7 +292,7 @@ public class CombPanel extends VBox implements Initializable {
                         MessageUtil.getMessage("non.negative.number"),
                         MessageUtil.formatMessage("comb.and.row.number", combNumber, tableItem.getNumber())
                 );
-                return false;
+                return true;
             } catch (IOException diffEx) {
                 DialogsUtil.showAlert(
                         Alert.AlertType.WARNING,
@@ -217,12 +300,18 @@ public class CombPanel extends VBox implements Initializable {
                         MessageUtil.getMessage("numbers.difference"),
                         MessageUtil.formatMessage("comb.and.row.number", combNumber, tableItem.getNumber())
                 );
-                return false;
+                return true;
             }
             i++;
         }
-        comb.setVisible(visibleCheckBox.isSelected());
-        return true;
+        return false;
+    }
+
+    private void updateColors() {
+        comb.getColor().clear();
+        for (ColorPicker colorPicker : colorPickers) {
+            comb.getColor().add(colorPicker.getValue().toString());
+        }
     }
 
     public static class TableItem {
