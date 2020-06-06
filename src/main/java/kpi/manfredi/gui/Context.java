@@ -20,6 +20,9 @@ public class Context {
     private int numberOfCombs;
     private Data data;
     private List<Node> combPanelsList;
+    private double lineThickness;
+    private double cellSize;
+    private double loopRadius;
 
     private static Context instance;
 
@@ -36,6 +39,9 @@ public class Context {
     }
 
     private Context() {
+        lineThickness = 2.0;
+        cellSize = 50.0;
+        loopRadius = 20.0;
         availableLocales = new LinkedList<>();
         availableLocales.add(new Locale("eng"));
         availableLocales.add(new Locale("ukr"));
@@ -109,5 +115,29 @@ public class Context {
 
     public void setCombPanelsList(List<Node> combPanelsList) {
         this.combPanelsList = combPanelsList;
+    }
+
+    public double getLineThickness() {
+        return lineThickness;
+    }
+
+    public void setLineThickness(double lineThickness) {
+        this.lineThickness = lineThickness;
+    }
+
+    public double getCellSize() {
+        return cellSize;
+    }
+
+    public void setCellSize(double cellSize) {
+        this.cellSize = cellSize;
+    }
+
+    public double getLoopRadius() {
+        return loopRadius;
+    }
+
+    public void setLoopRadius(double loopRadius) {
+        this.loopRadius = loopRadius;
     }
 }

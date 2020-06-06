@@ -24,6 +24,7 @@
                 <Menu fx:id="menuEdit" mnemonicParsing="false" text="Edit">
                     <items>
                         <MenuItem fx:id="menuEditDigitalRecord" mnemonicParsing="false" text="Edit digital record" />
+                  <MenuItem fx:id="menuEditDisplaySettings" mnemonicParsing="false" text="Edit Display Settings" />
                     </items>
                 </Menu>
             </menus>

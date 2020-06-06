@@ -10,7 +10,8 @@ public enum Screen {
     MAIN("/screens/MainScreen.fxml"),
     CREATING1("/screens/CreatingScreen1.fxml"),
     CREATING2("/screens/CreatingScreen2.fxml"),
-    COMB_SETTINGS("/screens/CombSettingsScreen.fxml");
+    COMB_SETTINGS("/screens/CombSettingsScreen.fxml"),
+    DISPLAY_SETTINGS("/screens/DisplaySettingsScreen.fxml");
 
     private final String path;
 

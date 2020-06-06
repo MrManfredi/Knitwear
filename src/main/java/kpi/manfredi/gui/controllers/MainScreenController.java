@@ -9,6 +9,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import kpi.manfredi.gui.Context;
 import kpi.manfredi.gui.Screen;
@@ -34,13 +35,14 @@ public class MainScreenController implements Initializable {
 
     private Data data;
 
-    private final int cellSize = 50;
-    private final double bottomPadding = 2.5 * cellSize;
-    private final double rightPadding = 1.5 * cellSize;
-    private final double radius = 20;
-    private int canvasWidth;
-    private int canvasHeight;
-    private int numberOfRows;
+    private double cellSize;
+    private double radius;
+    private double lineThickness;
+    private double bottomPadding;
+    private double rightPadding;
+    private double canvasWidth;
+    private double canvasHeight;
+    private double numberOfRows;
     private Point2D origin;
 
     @FXML
@@ -59,16 +61,29 @@ public class MainScreenController implements Initializable {
     private MenuItem menuEditDigitalRecord;
 
     @FXML
+    private MenuItem menuEditDisplaySettings;
+
+    @FXML
     private Canvas canvas;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        data = Context.getInstance().getData();
+        initData();
         refreshLocalization();
-        setMenuEditDigitalRecordListener();
         setMenuSaveListener();
         setMenuCloseProjectListener();
+        setMenuEditDigitalRecordListener();
+        setMenuEditDisplaySettingsListener();
         initCanvas();
+    }
+
+    private void initData() {
+        data = Context.getInstance().getData();
+        radius = Context.getInstance().getLoopRadius();
+        cellSize = Context.getInstance().getCellSize();
+        lineThickness = Context.getInstance().getLineThickness();
+        bottomPadding = 2.5 * cellSize;
+        rightPadding = 1.5 * cellSize;
     }
 
     private void refreshLocalization() {
@@ -77,12 +92,7 @@ public class MainScreenController implements Initializable {
         menuSave.setText(MessageUtil.getMessage("menu.save"));
         menuEdit.setText(MessageUtil.getMessage("menu.edit"));
         menuEditDigitalRecord.setText(MessageUtil.getMessage("menu.edit.digital.record"));
-    }
-
-    private void setMenuEditDigitalRecordListener() {
-        menuEditDigitalRecord.setOnAction(actionEvent ->
-                ScreenController.activateScreen(
-                        Screen.COMB_SETTINGS.getPath(), Context.getInstance().getPrimaryStage()));
+        menuEditDisplaySettings.setText(MessageUtil.getMessage("menu.edit.display.settings"));
     }
 
     private void setMenuSaveListener() {
@@ -104,6 +114,18 @@ public class MainScreenController implements Initializable {
             if (response.isPresent() && response.get() == ButtonType.OK) {
                 ScreenController.activateScreen(Screen.HOME.getPath(), Context.getInstance().getPrimaryStage());
             }
+        });
+    }
+
+    private void setMenuEditDigitalRecordListener() {
+        menuEditDigitalRecord.setOnAction(actionEvent ->
+                ScreenController.activateScreen(
+                        Screen.COMB_SETTINGS.getPath(), Context.getInstance().getPrimaryStage()));
+    }
+
+    private void setMenuEditDisplaySettingsListener() {
+        menuEditDisplaySettings.setOnAction(actionEvent -> {
+            ScreenController.activateScreen(Screen.DISPLAY_SETTINGS.getPath(), Context.getInstance().getPrimaryStage());
         });
     }
 
@@ -179,7 +201,7 @@ public class MainScreenController implements Initializable {
     private void drawGrid() {
         GraphicsContext context = canvas.getGraphicsContext2D();
         context.setFill(Color.BLACK);
-        double radius = 4;
+        double radius = cellSize * 0.1;
         double yPoint = canvasHeight - bottomPadding;
         while (yPoint > cellSize) {
             double xPoint = canvasWidth - rightPadding;
@@ -192,6 +214,8 @@ public class MainScreenController implements Initializable {
     }
 
     private void drawNumbering() {
+        GraphicsContext context = canvas.getGraphicsContext2D();
+        context.setFont(Font.font(cellSize * 0.4));
         drawRowNumbering();
         drawColumnNumbering();
     }
@@ -206,7 +230,7 @@ public class MainScreenController implements Initializable {
         double xPoint = cellSize * 1.5;
         double yPoint = canvasHeight - bottomPadding;
         while (yPoint > cellSize) {
-            context.strokeText(Integer.toString(number++), xPoint, yPoint);
+            context.fillText(Integer.toString(number++), xPoint, yPoint);
             yPoint -= cellSize;
         }
     }
@@ -223,7 +247,7 @@ public class MainScreenController implements Initializable {
         while (xPoint > cellSize) {
             String s = Integer.toString(number++);
 
-            context.strokeText(s, xPoint, yPoint);
+            context.fillText(s, xPoint, yPoint);
             xPoint -= cellSize;
         }
     }
@@ -744,7 +768,7 @@ public class MainScreenController implements Initializable {
     private void drawContour(List<Point2D> points, Color color) {
         GraphicsContext context = canvas.getGraphicsContext2D();
         context.setStroke(color);
-        context.setLineWidth(1.0);
+        context.setLineWidth(lineThickness);
         context.beginPath();
         for (Point2D point : points) {
             context.lineTo(point.getX(), point.getY());
