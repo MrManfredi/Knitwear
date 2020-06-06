@@ -234,6 +234,13 @@ public class MainScreenController implements Initializable {
     }
 
     private void drawComb(Comb comb) {
+        List<String> colors = comb.getColor();
+        for (int i = 0; i < colors.size(); i++) {
+            drawComb(comb, Color.web(colors.get(i)), i);
+        }
+    }
+
+    private void drawComb(Comb comb, Color color, int shift) {
         List<Comb.Row> rows = comb.getRow();
         for (int i = 0; i < numberOfRows - 1; i++) {
             Comb.Row row = rows.get(i % rows.size());
@@ -243,8 +250,20 @@ public class MainScreenController implements Initializable {
             int shiftRow = (int) (Math.max(row.getA(), row.getB()) - Math.max(nextRow.getA(), nextRow.getB()));
             Case theCase = determineTheCase(shiftComb, shiftNextComb, shiftRow);
 
-            drawSegment(theCase, row, i, nextRow);
+            drawSegment(theCase,
+                    i,
+                    color,
+                    adaptRow(row, shift),
+                    adaptRow(nextRow, shift)
+            );
         }
+    }
+
+    private Comb.Row adaptRow(Comb.Row row, int shift) {
+        Comb.Row adaptedRow = new Comb.Row();
+        adaptedRow.setA(row.getA() + shift);
+        adaptedRow.setB(row.getB() + shift);
+        return adaptedRow;
     }
 
     private Case determineTheCase(int shiftComb, int shiftNextComb, int shiftRow) {
@@ -269,67 +288,67 @@ public class MainScreenController implements Initializable {
         else return Case.EMPTY;
     }
 
-    private void drawSegment(Case theCase, Comb.Row row, int rowNum, Comb.Row nextRow) {
+    private void drawSegment(Case theCase, int rowNum, Color color, Comb.Row row, Comb.Row nextRow) {
 
         switch (theCase) {
             case CASE1:
-                drawSegment1(row, rowNum, nextRow);
+                drawSegment1(row, rowNum, nextRow, color);
                 break;
             case CASE2:
-                drawSegment2(row, rowNum, nextRow);
+                drawSegment2(row, rowNum, nextRow, color);
                 break;
             case CASE3:
-                drawSegment3(row, rowNum, nextRow);
+                drawSegment3(row, rowNum, nextRow, color);
                 break;
             case CASE4:
-                drawSegment4(row, rowNum, nextRow);
+                drawSegment4(row, rowNum, nextRow, color);
                 break;
             case CASE5:
-                drawSegment5(row, rowNum, nextRow);
+                drawSegment5(row, rowNum, nextRow, color);
                 break;
             case CASE6:
-                drawSegment6(row, rowNum, nextRow);
+                drawSegment6(row, rowNum, nextRow, color);
                 break;
             case CASE7:
-                drawSegment7(row, rowNum, nextRow);
+                drawSegment7(row, rowNum, nextRow, color);
                 break;
             case CASE8:
-                drawSegment8(row, rowNum, nextRow);
+                drawSegment8(row, rowNum, nextRow, color);
                 break;
             case CASE9:
-                drawSegment9(row, rowNum, nextRow);
+                drawSegment9(row, rowNum, nextRow, color);
                 break;
             case CASE10:
-                drawSegment10(row, rowNum, nextRow);
+                drawSegment10(row, rowNum, nextRow, color);
                 break;
             case CASE11:
-                drawSegment11(row, rowNum, nextRow);
+                drawSegment11(row, rowNum, nextRow, color);
                 break;
             case CASE12:
-                drawSegment12(row, rowNum, nextRow);
+                drawSegment12(row, rowNum, nextRow, color);
                 break;
             case CASE13:
-                drawSegment13(row, rowNum, nextRow);
+                drawSegment13(row, rowNum, nextRow, color);
                 break;
             case CASE14:
-                drawSegment14(row, rowNum, nextRow);
+                drawSegment14(row, rowNum, nextRow, color);
                 break;
             case CASE15:
-                drawSegment15(row, rowNum, nextRow);
+                drawSegment15(row, rowNum, nextRow, color);
                 break;
             case CASE16:
-                drawSegment16(row, rowNum, nextRow);
+                drawSegment16(row, rowNum, nextRow, color);
                 break;
             case CASE17:
             case CASE18:
-                drawSegment17and18(row, rowNum, nextRow);
+                drawSegment17and18(row, rowNum, nextRow, color);
                 break;
             default:
                 // do nothing
         }
     }
 
-    private void drawSegment1(Comb.Row row, int rowNum, Comb.Row nextRow) {
+    private void drawSegment1(Comb.Row row, int rowNum, Comb.Row nextRow, Color color) {
         double x = origin.getX() - row.getB() * cellSize + radius;
         double y = origin.getY() - rowNum * cellSize;
 
@@ -351,10 +370,10 @@ public class MainScreenController implements Initializable {
 
         points.add(lastPoint);
 
-        drawContour(points);
+        drawContour(points, color);
     }
 
-    private void drawSegment2(Comb.Row row, int rowNum, Comb.Row nextRow) {
+    private void drawSegment2(Comb.Row row, int rowNum, Comb.Row nextRow, Color color) {
 
         double bottomSide = (nextRow.getA() - row.getA()) * cellSize - radius;
         double hypotenuse = Math.sqrt(bottomSide * bottomSide + cellSize * cellSize);
@@ -372,10 +391,10 @@ public class MainScreenController implements Initializable {
         double y = origin.getY() - rowNum * cellSize;
         points.add(new Point2D(x, y));
 
-        drawContour(points);
+        drawContour(points, color);
     }
 
-    private void drawSegment3(Comb.Row row, int rowNum, Comb.Row nextRow) {
+    private void drawSegment3(Comb.Row row, int rowNum, Comb.Row nextRow, Color color) {
 
         double t = Math.asin(cellSize /
                 Math.sqrt(cellSize * cellSize + Math.pow((nextRow.getB() - row.getB()) * cellSize, 2)));
@@ -393,10 +412,10 @@ public class MainScreenController implements Initializable {
                 0.0
         ));
 
-        drawContour(points);
+        drawContour(points, color);
     }
 
-    private void drawSegment4(Comb.Row row, int rowNum, Comb.Row nextRow) {
+    private void drawSegment4(Comb.Row row, int rowNum, Comb.Row nextRow, Color color) {
 
         double t = Math.atan(1.0 / (row.getA() - nextRow.getA()));
         double angleTo = (Math.PI * 1.5 + t);
@@ -413,10 +432,10 @@ public class MainScreenController implements Initializable {
                 Math.PI
         ));
 
-        drawContour(points);
+        drawContour(points, color);
     }
 
-    private void drawSegment5(Comb.Row row, int rowNum, Comb.Row nextRow) {
+    private void drawSegment5(Comb.Row row, int rowNum, Comb.Row nextRow, Color color) {
         double x = origin.getX() - row.getB() * cellSize + radius;
         double y = origin.getY() - rowNum * cellSize;
 
@@ -437,10 +456,10 @@ public class MainScreenController implements Initializable {
                 Math.PI
         ));
 
-        drawContour(points);
+        drawContour(points, color);
     }
 
-    private void drawSegment6(Comb.Row row, int rowNum, Comb.Row nextRow) {
+    private void drawSegment6(Comb.Row row, int rowNum, Comb.Row nextRow, Color color) {
         double bottomSide = (nextRow.getB() - row.getA()) * cellSize - radius;
         double hypotenuse = Math.sqrt(bottomSide * bottomSide + cellSize * cellSize);
 
@@ -458,10 +477,10 @@ public class MainScreenController implements Initializable {
         double y = origin.getY() - rowNum * cellSize;
         points.add(new Point2D(x, y));
 
-        drawContour(points);
+        drawContour(points, color);
     }
 
-    private void drawSegment7(Comb.Row row, int rowNum, Comb.Row nextRow) {
+    private void drawSegment7(Comb.Row row, int rowNum, Comb.Row nextRow, Color color) {
         double bottomSide = (nextRow.getA() - row.getB()) * cellSize;
         double hypotenuse = Math.sqrt(bottomSide * bottomSide + cellSize * cellSize);
 
@@ -477,10 +496,10 @@ public class MainScreenController implements Initializable {
                 origin.getX() - nextRow.getA() * cellSize, origin.getY() - (rowNum + 1) * cellSize);
         points.addAll(MathUtil.getCirclePoints(center2, radius, t, Math.PI));
 
-        drawContour(points);
+        drawContour(points, color);
     }
 
-    private void drawSegment8(Comb.Row row, int rowNum, Comb.Row nextRow) {
+    private void drawSegment8(Comb.Row row, int rowNum, Comb.Row nextRow, Color color) {
         double bottomSide = (row.getA() - nextRow.getB()) * cellSize;
         double hypotenuse = Math.sqrt(bottomSide * bottomSide + cellSize * cellSize);
 
@@ -496,10 +515,10 @@ public class MainScreenController implements Initializable {
                 origin.getX() - nextRow.getB() * cellSize, origin.getY() - (rowNum + 1) * cellSize);
         points.addAll(MathUtil.getCirclePoints(center2, radius, Math.PI - t, 0));
 
-        drawContour(points);
+        drawContour(points, color);
     }
 
-    private void drawSegment9(Comb.Row row, int rowNum, Comb.Row nextRow) {
+    private void drawSegment9(Comb.Row row, int rowNum, Comb.Row nextRow, Color color) {
         List<Point2D> points = new ArrayList<>();
         double x = origin.getX() - (row.getA() - 0.5) * cellSize;
         double y1 = origin.getY() - rowNum * cellSize;
@@ -524,10 +543,10 @@ public class MainScreenController implements Initializable {
                 Math.PI * 0.5 + t,
                 0));
 
-        drawContour(points);
+        drawContour(points, color);
     }
 
-    private void drawSegment10(Comb.Row row, int rowNum, Comb.Row nextRow) {
+    private void drawSegment10(Comb.Row row, int rowNum, Comb.Row nextRow, Color color) {
         List<Point2D> points = new ArrayList<>();
         double x = origin.getX() - (row.getA() - 0.5) * cellSize;
         double y1 = origin.getY() - rowNum * cellSize;
@@ -553,10 +572,10 @@ public class MainScreenController implements Initializable {
                 Math.PI * 0.5 - t,
                 Math.PI));
 
-        drawContour(points);
+        drawContour(points, color);
     }
 
-    private void drawSegment11(Comb.Row row, int rowNum, Comb.Row nextRow) {
+    private void drawSegment11(Comb.Row row, int rowNum, Comb.Row nextRow, Color color) {
         List<Point2D> points = new ArrayList<>();
         double x = origin.getX() - (row.getA() - 0.5) * cellSize;
         double y1 = origin.getY() - rowNum * cellSize;
@@ -582,10 +601,10 @@ public class MainScreenController implements Initializable {
                 Math.PI * 1.5 - t,
                 0));
 
-        drawContour(points);
+        drawContour(points, color);
     }
 
-    private void drawSegment12(Comb.Row row, int rowNum, Comb.Row nextRow) {
+    private void drawSegment12(Comb.Row row, int rowNum, Comb.Row nextRow, Color color) {
         List<Point2D> points = new ArrayList<>();
         double x = origin.getX() - (row.getA() - 0.5) * cellSize;
         double y1 = origin.getY() - rowNum * cellSize;
@@ -611,10 +630,10 @@ public class MainScreenController implements Initializable {
                 t - Math.PI * 0.5,
                 Math.PI));
 
-        drawContour(points);
+        drawContour(points, color);
     }
 
-    private void drawSegment13(Comb.Row row, int rowNum, Comb.Row nextRow) {
+    private void drawSegment13(Comb.Row row, int rowNum, Comb.Row nextRow, Color color) {
         List<Point2D> points = new ArrayList<>();
         double x1 = origin.getX() - row.getB() * cellSize + radius;
         double y1 = origin.getY() - rowNum * cellSize;
@@ -626,10 +645,10 @@ public class MainScreenController implements Initializable {
         points.add(new Point2D(x2, y2));
         points.add(new Point2D(x2, y3));
 
-        drawContour(points);
+        drawContour(points, color);
     }
 
-    private void drawSegment14(Comb.Row row, int rowNum, Comb.Row nextRow) {
+    private void drawSegment14(Comb.Row row, int rowNum, Comb.Row nextRow, Color color) {
         List<Point2D> points = new ArrayList<>();
         double x1 = origin.getX() - row.getA() * cellSize - radius;
         double y1 = origin.getY() - rowNum * cellSize;
@@ -641,10 +660,10 @@ public class MainScreenController implements Initializable {
         points.add(new Point2D(x2, y2));
         points.add(new Point2D(x2, y3));
 
-        drawContour(points);
+        drawContour(points, color);
     }
 
-    private void drawSegment15(Comb.Row row, int rowNum, Comb.Row nextRow) {
+    private void drawSegment15(Comb.Row row, int rowNum, Comb.Row nextRow, Color color) {
         List<Point2D> points = new ArrayList<>();
         double x = origin.getX() - (nextRow.getA() - 0.5) * cellSize;
         double y2 = origin.getY() - (rowNum + 1) * cellSize;
@@ -670,10 +689,10 @@ public class MainScreenController implements Initializable {
                 -Math.PI * 0.5 - t,
                 0));
 
-        drawContour(points);
+        drawContour(points, color);
     }
 
-    private void drawSegment16(Comb.Row row, int rowNum, Comb.Row nextRow) {
+    private void drawSegment16(Comb.Row row, int rowNum, Comb.Row nextRow, Color color) {
         List<Point2D> points = new ArrayList<>();
         double x = origin.getX() - (nextRow.getA() - 0.5) * cellSize;
         double y2 = origin.getY() - (rowNum + 1) * cellSize;
@@ -699,10 +718,10 @@ public class MainScreenController implements Initializable {
                 t - Math.PI * 0.5,
                 -Math.PI));
 
-        drawContour(points);
+        drawContour(points, color);
     }
 
-    private void drawSegment17and18(Comb.Row row, int rowNum, Comb.Row nextRow) {
+    private void drawSegment17and18(Comb.Row row, int rowNum, Comb.Row nextRow, Color color) {
         List<Point2D> points = new ArrayList<>();
         double x1 = origin.getX() - (row.getA() - 0.5) * cellSize;
         double y11 = origin.getY() - rowNum * cellSize;
@@ -716,11 +735,12 @@ public class MainScreenController implements Initializable {
         points.add(new Point2D(x2, y21));
         points.add(new Point2D(x2, y22));
 
-        drawContour(points);
+        drawContour(points, color);
     }
 
-    private void drawContour(List<Point2D> points) {
+    private void drawContour(List<Point2D> points, Color color) {
         GraphicsContext context = canvas.getGraphicsContext2D();
+        context.setStroke(color);
         context.setLineWidth(1.0);
         context.beginPath();
         for (Point2D point : points) {
