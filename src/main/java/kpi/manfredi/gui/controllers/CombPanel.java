@@ -264,15 +264,10 @@ public class CombPanel extends VBox implements Initializable {
      * <br> {@code false} when everything is ok
      */
     private boolean updateRows() {
-        int i = 0;
+        comb.getRow().clear();
         for (TableItem tableItem : combSettingsTable.getItems()) {
-            Comb.Row row;
-            if (i < comb.getRow().size()) {
-                row = comb.getRow().get(i);
-            } else {
-                row = new Comb.Row();
-                comb.getRow().add(row);
-            }
+            Comb.Row row = new Comb.Row();
+            comb.getRow().add(row);
 
             try {
                 int a = Integer.parseInt(tableItem.getA());
@@ -304,7 +299,6 @@ public class CombPanel extends VBox implements Initializable {
                 );
                 return true;
             }
-            i++;
         }
         return false;
     }
@@ -327,8 +321,8 @@ public class CombPanel extends VBox implements Initializable {
                         Alert.AlertType.WARNING,
                         MessageUtil.formatMessage("comb.title", combNumber),
                         MessageUtil.getMessage("row.shift.error"),
-                        MessageUtil.getMessage("row.shift.info")
-                        );
+                        MessageUtil.formatMessage("row.shift.info", i + 1, i + 2)
+                );
                 return true;
             }
         }

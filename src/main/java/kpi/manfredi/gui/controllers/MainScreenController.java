@@ -153,13 +153,16 @@ public class MainScreenController implements Initializable {
         int result = 0;
         for (Comb comb : data.getComb()) {
             if (comb.isVisible()) {
+                int tempMax = 0;
                 for (Comb.Row row : comb.getRow()) {
-                    result = (int) Math.max(result, row.getA());
-                    result = (int) Math.max(result, row.getB());
+                    tempMax = (int) Math.max(tempMax, row.getA());
+                    tempMax = (int) Math.max(tempMax, row.getB());
                 }
+                tempMax += comb.getColor().size();
+                result = Math.max(result, tempMax);
             }
         }
-        return result + 1;
+        return result;
     }
 
     /**
