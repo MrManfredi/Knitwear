@@ -213,7 +213,7 @@ public class CombPanel extends VBox implements Initializable {
 
     public void setCombNumber(int combNumber) {
         this.combNumber = combNumber;
-        combNameLabel.setText(MessageUtil.getMessage("comb.label") + " " + combNumber);
+        combNameLabel.setText(MessageUtil.formatMessage("comb.title", combNumber));
     }
 
     /**
@@ -229,6 +229,8 @@ public class CombPanel extends VBox implements Initializable {
 
         if (updateRows()) return false;
 
+        if (validateRowShift()) return false;
+
         comb.setVisible(visibleCheckBox.isSelected());
         updateColors();
 
@@ -236,7 +238,7 @@ public class CombPanel extends VBox implements Initializable {
     }
 
     /**
-     * This method is used to read data from table to {@code Comb} entity.
+     * This method is used to validate row count.
      * Shows alert when rows less then two
      *
      * @return {@code true} when rows less then two
@@ -246,7 +248,7 @@ public class CombPanel extends VBox implements Initializable {
         if (combSettingsTable.getItems().size() < 2) {
             DialogsUtil.showAlert(
                     Alert.AlertType.WARNING,
-                    MessageUtil.getMessage("comb.label") + " " + combNumber,
+                    MessageUtil.formatMessage("comb.title", combNumber),
                     MessageUtil.getMessage("number.of.rows.error")
             );
             return true;
@@ -303,6 +305,32 @@ public class CombPanel extends VBox implements Initializable {
                 return true;
             }
             i++;
+        }
+        return false;
+    }
+
+    /**
+     * This method is used to validate shift between rows.
+     * Shows alert when rows less then two
+     *
+     * @return {@code true} when row shift equals zero
+     * <br> {@code false} when everything is ok
+     */
+    private boolean validateRowShift() {
+        List<Comb.Row> rows = comb.getRow();
+        for (int i = 0; i < rows.size() - 1; i++) {
+            Comb.Row row = rows.get(i);
+            Comb.Row nextRow = rows.get(i + 1);
+            int rowShift = (int) (Math.max(row.getA(), row.getB()) - Math.max(nextRow.getA(), nextRow.getB()));
+            if (rowShift == 0) {
+                DialogsUtil.showAlert(
+                        Alert.AlertType.WARNING,
+                        MessageUtil.formatMessage("comb.title", combNumber),
+                        MessageUtil.getMessage("row.shift.error"),
+                        MessageUtil.getMessage("row.shift.info")
+                        );
+                return true;
+            }
         }
         return false;
     }
