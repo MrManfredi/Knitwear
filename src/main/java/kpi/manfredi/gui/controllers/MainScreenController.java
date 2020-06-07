@@ -124,9 +124,9 @@ public class MainScreenController implements Initializable {
     }
 
     private void setMenuEditDisplaySettingsListener() {
-        menuEditDisplaySettings.setOnAction(actionEvent -> {
-            ScreenController.activateScreen(Screen.DISPLAY_SETTINGS.getPath(), Context.getInstance().getPrimaryStage());
-        });
+        menuEditDisplaySettings.setOnAction(actionEvent ->
+                ScreenController.activateScreen(Screen.DISPLAY_SETTINGS.getPath(),
+                        Context.getInstance().getPrimaryStage()));
     }
 
     private void initCanvas() {
@@ -312,6 +312,15 @@ public class MainScreenController implements Initializable {
         else if (shiftComb < 0 && shiftNextComb == 0 && shiftRow > 0) return Case.CASE16;
         else if (shiftComb == 0 && shiftNextComb == 0 && shiftRow < 0) return Case.CASE17;
         else if (shiftComb == 0 && shiftNextComb == 0 && shiftRow > 0) return Case.CASE18;
+        else if (shiftComb < 0 && shiftNextComb > 0 && shiftRow == 0) return Case.CASE19;
+        else if (shiftComb > 0 && shiftNextComb < 0 && shiftRow == 0) return Case.CASE20;
+        else if (shiftComb < 0 && shiftNextComb < 0 && shiftRow == 0) return Case.CASE21;
+        else if (shiftComb > 0 && shiftNextComb > 0 && shiftRow == 0) return Case.CASE22;
+        else if (shiftComb > 0 && shiftNextComb == 0 && shiftRow == 0) return Case.CASE23;
+        else if (shiftComb < 0 && shiftNextComb == 0 && shiftRow == 0) return Case.CASE24;
+        else if (shiftComb == 0 && shiftNextComb < 0 && shiftRow == 0) return Case.CASE25;
+        else if (shiftComb == 0 && shiftNextComb > 0 && shiftRow == 0) return Case.CASE26;
+        else if (shiftComb == 0 && shiftNextComb == 0 && shiftRow == 0) return Case.CASE27;
         else return Case.EMPTY;
     }
 
@@ -343,6 +352,7 @@ public class MainScreenController implements Initializable {
                 drawSegment8(row, rowNum, nextRow, color);
                 break;
             case CASE9:
+            case CASE26:
                 drawSegment9(row, rowNum, nextRow, color);
                 break;
             case CASE10:
@@ -352,15 +362,18 @@ public class MainScreenController implements Initializable {
                 drawSegment11(row, rowNum, nextRow, color);
                 break;
             case CASE12:
+            case CASE25:
                 drawSegment12(row, rowNum, nextRow, color);
                 break;
             case CASE13:
                 drawSegment13(row, rowNum, nextRow, color);
                 break;
             case CASE14:
+            case CASE24:
                 drawSegment14(row, rowNum, nextRow, color);
                 break;
             case CASE15:
+            case CASE23:
                 drawSegment15(row, rowNum, nextRow, color);
                 break;
             case CASE16:
@@ -368,7 +381,22 @@ public class MainScreenController implements Initializable {
                 break;
             case CASE17:
             case CASE18:
+            case CASE27:
                 drawSegment17and18(row, rowNum, nextRow, color);
+                break;
+            case CASE19:
+                drawSegment19(row, rowNum, nextRow, color);
+                break;
+            case CASE20:
+                drawSegment20(row, rowNum, nextRow, color);
+                break;
+            case CASE21:
+                drawSegment21(row, rowNum, nextRow, color);
+                break;
+            case CASE22:
+                drawSegment22(row, rowNum, nextRow, color);
+                break;
+            case EMPTY:
                 break;
             default:
                 // do nothing
@@ -765,6 +793,89 @@ public class MainScreenController implements Initializable {
         drawContour(points, color);
     }
 
+    private void drawSegment19(Comb.Row row, int rowNum, Comb.Row nextRow, Color color) {
+        List<Point2D> points = new ArrayList<>();
+        double x = origin.getX() - row.getA() * cellSize - radius;
+        double y = origin.getY() - rowNum * cellSize;
+        points.add(new Point2D(x, y));
+        Point2D center = new Point2D(
+                origin.getX() - nextRow.getB() * cellSize, origin.getY() - (rowNum + 1) * cellSize);
+
+        points.addAll(MathUtil.getCirclePoints(
+                center,
+                radius,
+                Math.PI,
+                0));
+
+        drawContour(points, color);
+    }
+
+    private void drawSegment20(Comb.Row row, int rowNum, Comb.Row nextRow, Color color) {
+        List<Point2D> points = new ArrayList<>();
+        double x = origin.getX() - row.getB() * cellSize + radius;
+        double y = origin.getY() - rowNum * cellSize;
+        points.add(new Point2D(x, y));
+        Point2D center = new Point2D(
+                origin.getX() - nextRow.getA() * cellSize, origin.getY() - (rowNum + 1) * cellSize);
+
+        points.addAll(MathUtil.getCirclePoints(
+                center,
+                radius,
+                0,
+                Math.PI
+        ));
+
+        drawContour(points, color);
+    }
+
+    private void drawSegment21(Comb.Row row, int rowNum, Comb.Row nextRow, Color color) {
+        Point2D center = new Point2D(
+                origin.getX() - row.getA() * cellSize, origin.getY() - rowNum * cellSize);
+
+        List<Point2D> points = MathUtil.getCirclePoints(
+                center,
+                radius,
+                -Math.PI,
+                0
+        );
+
+        Point2D centerNext = new Point2D(
+                origin.getX() - nextRow.getA() * cellSize, origin.getY() - (rowNum + 1) * cellSize);
+
+        points.addAll(MathUtil.getCirclePoints(
+                centerNext,
+                radius,
+                0,
+                Math.PI
+        ));
+
+        drawContour(points, color);
+    }
+
+    private void drawSegment22(Comb.Row row, int rowNum, Comb.Row nextRow, Color color) {
+        Point2D center = new Point2D(
+                origin.getX() - row.getB() * cellSize, origin.getY() - rowNum * cellSize);
+
+        List<Point2D> points = MathUtil.getCirclePoints(
+                center,
+                radius,
+                0,
+                -Math.PI
+        );
+
+        Point2D centerNext = new Point2D(
+                origin.getX() - nextRow.getB() * cellSize, origin.getY() - (rowNum + 1) * cellSize);
+
+        points.addAll(MathUtil.getCirclePoints(
+                centerNext,
+                radius,
+                Math.PI,
+                0
+        ));
+
+        drawContour(points, color);
+    }
+
     private void drawContour(List<Point2D> points, Color color) {
         GraphicsContext context = canvas.getGraphicsContext2D();
         context.setStroke(color);
@@ -795,6 +906,15 @@ public class MainScreenController implements Initializable {
         CASE16,
         CASE17,
         CASE18,
+        CASE19,
+        CASE20,
+        CASE21,
+        CASE22,
+        CASE23,
+        CASE24,
+        CASE25,
+        CASE26,
+        CASE27,
         EMPTY
     }
 }
